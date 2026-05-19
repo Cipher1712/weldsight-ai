@@ -106,7 +106,7 @@ function ChannelChart({ ch, t }: { ch: Channel; t: number }) {
             <Tooltip
               contentStyle={{ background: "var(--color-surface-2)", border: "1px solid var(--color-border)", borderRadius: 6, fontSize: 11 }}
               labelStyle={{ color: "var(--color-muted-foreground)" }}
-              formatter={(v: number) => [v.toFixed(2), ch.unit]}
+              formatter={(v) => [Number(v).toFixed(2), ch.unit]}
             />
             <ReferenceLine y={ch.base + ch.amp * 1.2} stroke="var(--color-warn)" strokeDasharray="3 3" strokeOpacity={0.5} />
             <ReferenceLine y={ch.base - ch.amp * 1.2} stroke="var(--color-warn)" strokeDasharray="3 3" strokeOpacity={0.5} />
