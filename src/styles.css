@@ -297,3 +297,32 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-surface-3); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); background-clip: padding-box; }
+
+/* --- Industrial utilities --- */
+.blueprint-bg {
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklch, var(--color-grid) 180%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--color-grid) 180%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px, 12px 12px, 96px 96px, 96px 96px;
+}
+.steel-tex {
+  background-image:
+    repeating-linear-gradient(90deg,
+      color-mix(in oklch, var(--color-foreground) 2.5%, transparent) 0 1px,
+      transparent 1px 3px),
+    linear-gradient(180deg,
+      color-mix(in oklch, var(--color-surface) 100%, transparent),
+      color-mix(in oklch, var(--color-surface-2) 100%, transparent));
+}
+.crt::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg,
+    oklch(1 0 0 / 0.025) 0 1px, transparent 1px 2px);
+  mix-blend-mode: overlay;
+}
+.text-cyan { color: var(--color-cyan); }
+.accent-cyan { accent-color: var(--color-cyan); }
+.bg-cyan { background: var(--color-cyan); }
+
