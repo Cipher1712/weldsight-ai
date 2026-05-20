@@ -23,18 +23,29 @@ export function WeldInspectionView({ spike }: Props) {
   }, []);
 
   const arc = 0.6 + 0.4 * Math.abs(Math.sin(t / 18));
-  const fps = (58 + Math.sin(t / 30) * 1.4).toFixed(1);
+  const fps = (58.7 + Math.sin(t / 30) * 1.3 + (Math.random() - 0.5) * 0.15).toFixed(2);
+  const encoder = (1284.62 + Math.sin(t / 14) * 0.8 + t * 0.0021).toFixed(3);
+  const weldSpeed = (38.2 + Math.sin(t / 22) * 0.6).toFixed(2);
+  const sync = (0.38 + Math.abs(Math.sin(t / 40)) * 0.18).toFixed(2);
+  const packets = (99.982 - Math.abs(Math.sin(t / 60)) * 0.008).toFixed(3);
+  const dropped = Math.max(0, Math.floor(2 + Math.sin(t / 80) * 1.5));
+  const aiConf = (0.94 - spike * 0.12 + Math.sin(t / 25) * 0.01).toFixed(3);
+  const thermal = (412 + Math.sin(t / 18) * 6 + spike * 14).toFixed(0);
+  const frameId = (t * 2).toString().padStart(7, "0");
 
   return (
     <div className="panel flex h-full flex-col overflow-hidden">
       <div className="panel-header">
-        <div className="flex items-center gap-3">
-          <span className="panel-title">Live Weld Inspection · WS-07</span>
-          <span className="chip chip-stable">
+        <div className="flex items-center gap-2 min-w-0 flex-wrap">
+          <span className="panel-title">Live Weld Inspection</span>
+          <span className="mono text-[10px] text-muted-foreground">·</span>
+          <span className="mono text-[10px] text-foreground">WS-07 / MIG-CAM-02 / EDGE-JTX-07</span>
+          <span className="chip chip-stable ml-1">
             <span className="dot pulse-critical" style={{ background: "var(--color-critical)" }} />
-            REC · LIVE
+            RTSP · REC
           </span>
-          <span className="chip mono">CAM-A · 1920×1080 · {fps} FPS</span>
+          <span className="chip mono">1920×1080 · {fps} FPS</span>
+          <span className="chip mono">H.265 · 8 Mbps</span>
         </div>
         <div className="flex items-center gap-1.5 text-[10.5px] mono">
           {(["AI", "THERMAL", "SEG", "ANOM"] as const).map((m) => (
