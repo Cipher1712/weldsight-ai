@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
 const STATIONS = ["WS-01","WS-02","WS-03","WS-04","WS-05","WS-06","WS-07","WS-08","WS-09","WS-10"];
 const ZONES = ["Root","Fill-1","Fill-2","Cap-1","Cap-2","HAZ-L","HAZ-R","Seam-A","Seam-B","Tail"];
@@ -44,8 +44,8 @@ export function DefectHeatmap() {
             <div key={z} className="mono text-[9px] text-muted-foreground uppercase tracking-wider text-center pb-1">{z}</div>
           ))}
           {STATIONS.map((s, si) => (
-            <>
-              <div key={s} className="mono text-[10px] text-muted-foreground self-center pr-2">{s}</div>
+            <Fragment key={s}>
+              <div className="mono text-[10px] text-muted-foreground self-center pr-2">{s}</div>
               {ZONES.map((_, zi) => {
                 const c = cells[si * ZONES.length + zi];
                 return (
@@ -57,7 +57,7 @@ export function DefectHeatmap() {
                   />
                 );
               })}
-            </>
+            </Fragment>
           ))}
         </div>
         <div className="mt-3 flex items-center gap-3 mono text-[9.5px] text-muted-foreground">
