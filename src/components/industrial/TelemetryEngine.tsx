@@ -27,7 +27,10 @@ function makeSeries(n: number, base: number, amp: number, t: number, spike = fal
   const out: { t: number; v: number; hi: number; lo: number }[] = [];
   for (let i = 0; i < n; i++) {
     const x = (i + t) / 12;
-    let v = base + Math.sin(x) * amp * 0.7 + Math.sin(x * 3.1) * amp * 0.25 + (Math.random() - 0.5) * amp * 0.15;
+    // sinusoidal fundamental + 3rd harmonic + electrical white noise + occasional micro-jitter
+    let v = base + Math.sin(x) * amp * 0.7 + Math.sin(x * 3.1) * amp * 0.22;
+    v += (Math.random() - 0.5) * amp * 0.18;
+    if (Math.random() > 0.985) v += (Math.random() - 0.5) * amp * 0.6; // arc micro-instability
     if (spike && i > n - 28 && i < n - 18) v += amp * 1.3 * Math.sin((i - (n - 28)) * 0.6);
     out.push({ t: i, v, hi: base + amp * 1.2, lo: base - amp * 1.2 });
   }
