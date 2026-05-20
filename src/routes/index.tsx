@@ -11,16 +11,30 @@ import { HistoricalAnalytics } from "@/components/industrial/HistoricalAnalytics
 import { PredictiveMaintenance } from "@/components/industrial/PredictiveMaintenance";
 import { DigitalTwin } from "@/components/industrial/DigitalTwin";
 import { OperatorActions } from "@/components/industrial/OperatorActions";
+import { DefectHeatmap } from "@/components/industrial/DefectHeatmap";
+import { SyncTimeline } from "@/components/industrial/SyncTimeline";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Industrial AI Weld Intelligence Platform · Tata Steel" },
-      { name: "description", content: "Real-time AI-powered weld quality, telemetry, and predictive maintenance command center for steel manufacturing." },
+      { title: "WeldSight AI · Adaptive Industrial Weld Intelligence · Tata Steel" },
+      { name: "description", content: "WeldSight AI — real-time adaptive weld intelligence, synchronized vision + telemetry, predictive maintenance and process stability analytics for Tata Steel Industry 4.0 plants." },
     ],
   }),
   component: Dashboard,
 });
+
+function SectionLabel({ title, sub }: { title: string; sub?: string }) {
+  return (
+    <div className="flex items-baseline justify-between border-b border-border pb-1.5 mb-2">
+      <div className="flex items-baseline gap-3">
+        <h2 className="font-serif text-[17px] text-foreground tracking-tight">{title}</h2>
+        {sub && <span className="mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{sub}</span>}
+      </div>
+      <span className="mono text-[10px] text-muted-foreground">LIVE · synchronized</span>
+    </div>
+  );
+}
 
 function Dashboard() {
   const [spike, setSpike] = useState(0);
