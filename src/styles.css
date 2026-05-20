@@ -87,57 +87,89 @@
   --chart-5: oklch(0.62 0.2 27);
 
   --bg-ambient:
-    radial-gradient(1400px 700px at 8% -10%, oklch(0.24 0.03 220 / 0.28), transparent 60%),
-    radial-gradient(1000px 600px at 110% 110%, oklch(0.22 0.04 200 / 0.18), transparent 60%);
-  --grain-opacity: 0.035;
-  --vignette: radial-gradient(120% 90% at 50% 50%, transparent 55%, oklch(0 0 0 / 0.35) 100%);
+    radial-gradient(1400px 700px at 8% -10%, oklch(0.24 0.03 220 / 0.32), transparent 60%),
+    radial-gradient(1000px 600px at 110% 110%, oklch(0.22 0.04 200 / 0.2), transparent 60%),
+    linear-gradient(180deg, oklch(0.17 0.014 245) 0%, oklch(0.155 0.012 245) 100%);
+  --grain-opacity: 0.05;
+  --vignette: radial-gradient(120% 90% at 50% 50%, transparent 52%, oklch(0 0 0 / 0.45) 100%);
 }
 
-/* THEME 2 — EXECUTIVE ANALYTICS (light, warm) */
+/* THEME 2 — INDUSTRIAL BLUEPRINT (engineering workstation light mode) */
 .exec {
-  --background: oklch(0.965 0.005 85);
-  --foreground: oklch(0.22 0.012 250);
-  --surface:   oklch(0.945 0.006 85);
-  --surface-2: oklch(0.925 0.007 85);
-  --surface-3: oklch(0.9 0.008 85);
-  --panel:     oklch(0.97 0.005 85);
-  --card:      oklch(0.97 0.005 85);
-  --card-foreground: oklch(0.22 0.012 250);
-  --popover: oklch(0.97 0.005 85);
-  --popover-foreground: oklch(0.22 0.012 250);
-  --primary: oklch(0.42 0.07 240);
+  /* Warm off-white drafting paper with cool blueprint accents */
+  --background: oklch(0.945 0.012 90);
+  --foreground: oklch(0.24 0.025 245);
+  --surface:   oklch(0.928 0.013 88);
+  --surface-2: oklch(0.905 0.014 88);
+  --surface-3: oklch(0.875 0.016 86);
+  --panel:     oklch(0.952 0.011 90);
+  --card:      oklch(0.952 0.011 90);
+  --card-foreground: oklch(0.22 0.025 245);
+  --popover: oklch(0.96 0.01 90);
+  --popover-foreground: oklch(0.22 0.025 245);
+  --primary: oklch(0.36 0.09 245);
   --primary-foreground: oklch(0.98 0.003 0);
-  --secondary: oklch(0.9 0.006 85);
-  --secondary-foreground: oklch(0.22 0.012 250);
-  --muted: oklch(0.92 0.005 85);
-  --muted-foreground: oklch(0.46 0.012 250);
-  --accent: oklch(0.52 0.07 220);
+  --secondary: oklch(0.88 0.012 88);
+  --secondary-foreground: oklch(0.22 0.025 245);
+  --muted: oklch(0.9 0.011 88);
+  --muted-foreground: oklch(0.42 0.022 245);
+  --accent: oklch(0.42 0.1 240);
   --accent-foreground: oklch(0.98 0.003 0);
-  --destructive: oklch(0.5 0.18 27);
+  --destructive: oklch(0.48 0.2 27);
   --destructive-foreground: oklch(0.98 0.005 0);
-  --border: oklch(0.85 0.008 85);
-  --border-strong: oklch(0.72 0.01 85);
-  --input: oklch(0.88 0.008 85);
-  --ring: oklch(0.42 0.07 240);
-  --grid: oklch(0.78 0.008 85 / 0.55);
+  --border: oklch(0.78 0.016 240);
+  --border-strong: oklch(0.55 0.04 240);
+  --input: oklch(0.85 0.014 88);
+  --ring: oklch(0.36 0.09 245);
+  --grid: oklch(0.55 0.06 240 / 0.22);
 
-  --stable: oklch(0.48 0.11 155);
-  --warn:   oklch(0.6  0.13 70);
-  --high:   oklch(0.55 0.16 45);
-  --critical: oklch(0.5 0.2 27);
-  --cyan:   oklch(0.5 0.09 220);
+  --stable: oklch(0.46 0.13 155);
+  --warn:   oklch(0.56 0.15 65);
+  --high:   oklch(0.5 0.17 40);
+  --critical: oklch(0.46 0.21 27);
+  --cyan:   oklch(0.4 0.12 235);
 
-  --chart-1: oklch(0.42 0.07 240);
-  --chart-2: oklch(0.48 0.11 155);
-  --chart-3: oklch(0.6 0.13 70);
-  --chart-4: oklch(0.55 0.16 45);
-  --chart-5: oklch(0.5 0.2 27);
+  --chart-1: oklch(0.36 0.09 245);
+  --chart-2: oklch(0.46 0.13 155);
+  --chart-3: oklch(0.56 0.15 65);
+  --chart-4: oklch(0.5 0.17 40);
+  --chart-5: oklch(0.46 0.21 27);
 
+  /* Blueprint paper ambience — drafting board feel */
   --bg-ambient:
-    radial-gradient(1400px 700px at 10% -10%, oklch(0.88 0.012 85 / 0.5), transparent 60%),
-    radial-gradient(1000px 600px at 110% 110%, oklch(0.9 0.01 240 / 0.35), transparent 60%);
-  --grain-opacity: 0.02;
-  --vignette: radial-gradient(120% 90% at 50% 50%, transparent 60%, oklch(0.7 0.008 85 / 0.25) 100%);
+    linear-gradient(180deg, oklch(0.96 0.012 90) 0%, oklch(0.92 0.018 235 / 0.55) 100%),
+    radial-gradient(1200px 700px at 12% -10%, oklch(0.88 0.04 240 / 0.45), transparent 60%);
+  --grain-opacity: 0.045;
+  --vignette: radial-gradient(120% 95% at 50% 50%, transparent 55%, oklch(0.55 0.05 240 / 0.18) 100%);
+}
+
+/* Blueprint grid underlay for light theme — drafting paper */
+.exec body::before {
+  background-image:
+    linear-gradient(oklch(0.55 0.06 240 / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.55 0.06 240 / 0.08) 1px, transparent 1px),
+    linear-gradient(oklch(0.55 0.06 240 / 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.55 0.06 240 / 0.16) 1px, transparent 1px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.15  0 0 0 0 0.18  0 0 0 0 0.28  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 12px 12px, 12px 12px, 96px 96px, 96px 96px, 160px 160px;
+  opacity: 1;
+  mix-blend-mode: multiply;
+}
+.exec .panel {
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklch, var(--color-panel) 96%, transparent),
+      color-mix(in oklch, var(--color-panel) 90%, transparent));
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.6),
+    inset 0 0 0 1px color-mix(in oklch, var(--color-border) 50%, transparent),
+    0 1px 0 oklch(0.55 0.05 240 / 0.06),
+    0 6px 18px -16px oklch(0.3 0.1 240 / 0.35);
+}
+.exec .panel::after {
+  background: repeating-linear-gradient(90deg,
+    oklch(0.4 0.08 240 / 0.025) 0 1px, transparent 1px 4px);
+  opacity: 0.6; mix-blend-mode: multiply;
 }
 
 @layer base {
@@ -265,3 +297,32 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-surface-3); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); background-clip: padding-box; }
+
+/* --- Industrial utilities --- */
+.blueprint-bg {
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklch, var(--color-grid) 180%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--color-grid) 180%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px, 12px 12px, 96px 96px, 96px 96px;
+}
+.steel-tex {
+  background-image:
+    repeating-linear-gradient(90deg,
+      color-mix(in oklch, var(--color-foreground) 2.5%, transparent) 0 1px,
+      transparent 1px 3px),
+    linear-gradient(180deg,
+      color-mix(in oklch, var(--color-surface) 100%, transparent),
+      color-mix(in oklch, var(--color-surface-2) 100%, transparent));
+}
+.crt::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg,
+    oklch(1 0 0 / 0.025) 0 1px, transparent 1px 2px);
+  mix-blend-mode: overlay;
+}
+.text-cyan { color: var(--color-cyan); }
+.accent-cyan { accent-color: var(--color-cyan); }
+.bg-cyan { background: var(--color-cyan); }
+

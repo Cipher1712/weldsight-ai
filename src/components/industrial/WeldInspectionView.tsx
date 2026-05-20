@@ -23,18 +23,29 @@ export function WeldInspectionView({ spike }: Props) {
   }, []);
 
   const arc = 0.6 + 0.4 * Math.abs(Math.sin(t / 18));
-  const fps = (58 + Math.sin(t / 30) * 1.4).toFixed(1);
+  const fps = (58.7 + Math.sin(t / 30) * 1.3 + (Math.random() - 0.5) * 0.15).toFixed(2);
+  const encoder = (1284.62 + Math.sin(t / 14) * 0.8 + t * 0.0021).toFixed(3);
+  const weldSpeed = (38.2 + Math.sin(t / 22) * 0.6).toFixed(2);
+  const sync = (0.38 + Math.abs(Math.sin(t / 40)) * 0.18).toFixed(2);
+  const packets = (99.982 - Math.abs(Math.sin(t / 60)) * 0.008).toFixed(3);
+  const dropped = Math.max(0, Math.floor(2 + Math.sin(t / 80) * 1.5));
+  const aiConf = (0.94 - spike * 0.12 + Math.sin(t / 25) * 0.01).toFixed(3);
+  const thermal = (412 + Math.sin(t / 18) * 6 + spike * 14).toFixed(0);
+  const frameId = (t * 2).toString().padStart(7, "0");
 
   return (
     <div className="panel flex h-full flex-col overflow-hidden">
       <div className="panel-header">
-        <div className="flex items-center gap-3">
-          <span className="panel-title">Live Weld Inspection · WS-07</span>
-          <span className="chip chip-stable">
+        <div className="flex items-center gap-2 min-w-0 flex-wrap">
+          <span className="panel-title">Live Weld Inspection</span>
+          <span className="mono text-[10px] text-muted-foreground">·</span>
+          <span className="mono text-[10px] text-foreground">WS-07 / MIG-CAM-02 / EDGE-JTX-07</span>
+          <span className="chip chip-stable ml-1">
             <span className="dot pulse-critical" style={{ background: "var(--color-critical)" }} />
-            REC · LIVE
+            RTSP · REC
           </span>
-          <span className="chip mono">CAM-A · 1920×1080 · {fps} FPS</span>
+          <span className="chip mono">1920×1080 · {fps} FPS</span>
+          <span className="chip mono">H.265 · 8 Mbps</span>
         </div>
         <div className="flex items-center gap-1.5 text-[10.5px] mono">
           {(["AI", "THERMAL", "SEG", "ANOM"] as const).map((m) => (
@@ -178,35 +189,62 @@ export function WeldInspectionView({ spike }: Props) {
           )}
         </svg>
 
-        {/* HUD telemetry strip */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 text-[10.5px] mono">
+        {/* Calibration corner markers */}
+        <svg className="absolute inset-0 h-full w-full pointer-events-none" preserveAspectRatio="none">
+          {[[8, 8], [8, "calc(100% - 8px)"], ["calc(100% - 8px)", 8], ["calc(100% - 8px)", "calc(100% - 8px)"]].map((p, i) => (
+            <g key={i} stroke="var(--color-cyan)" strokeWidth="1" opacity="0.6">
+              <line x1={p[0] as any} y1={p[1] as any} x2={`calc(${p[0]} ${typeof p[0]==='string'&&p[0].includes('100%')?'+':'+ '}10px)` as any} y2={p[1] as any} />
+            </g>
+          ))}
+        </svg>
+
+        {/* HUD telemetry — left column (vision/edge) */}
+        <div className="absolute top-2 left-2 flex flex-col gap-[3px] text-[10px] mono">
           {[
-            ["INFERENCE", "YOLOv8-Weld-INT8"],
-            ["LATENCY", "12.4 ms"],
-            ["EDGE", "NVIDIA Jetson AGX"],
-            ["FRAME", `#${(t * 2).toString().padStart(7, "0")}`],
-          ].map(([k, v]) => (
-            <div key={k} className="flex items-center gap-2 bg-[oklch(0.12_0.01_240/0.7)] border border-border px-2 py-0.5 rounded">
-              <span className="text-muted-foreground">{k}</span>
-              <span className="text-cyan">{v}</span>
+            ["INFER",   "YOLOv8-WELD-INT8 · v4.2", "ok"],
+            ["EDGE",    "EDGE-JTX-07 · Orin 47.2°C", "ok"],
+            ["LAT",     "12.4 ms", "ok"],
+            ["FRAME",   `#${frameId}`, "muted"],
+            ["TS",      "2026-05-20T14:42:18.412Z", "muted"],
+            ["ENC",     `${encoder} mm · Δ +0.021`, "ok"],
+            ["PKT",     `${packets}% · drop ${dropped}/10⁴`, dropped > 2 ? "warn" : "ok"],
+            ["SYNC",    `OPC-BUS-A Δ ${sync} ms`, "ok"],
+          ].map(([k, v, tone]) => (
+            <div key={k as string} className="flex items-center gap-2 bg-[oklch(0.12_0.01_240/0.72)] border border-border px-1.5 py-[1px] rounded-sm">
+              <span className="text-muted-foreground w-10">{k}</span>
+              <span style={{ color: tone === "warn" ? "var(--color-warn)" : tone === "muted" ? "var(--color-muted-foreground)" : "var(--color-cyan)" }}>{v}</span>
             </div>
           ))}
         </div>
 
-        <div className="absolute top-2 right-2 flex flex-col gap-1 text-[10.5px] mono items-end">
+        {/* HUD telemetry — right column (process/AI) */}
+        <div className="absolute top-2 right-2 flex flex-col gap-[3px] text-[10px] mono items-end">
           <div className="chip chip-stable">AI OVERLAY · ON</div>
-          <div className="chip">ZOOM 1.0×</div>
-          <div className="chip">FOCUS AUTO</div>
+          {[
+            ["AI CONF",  aiConf, Number(aiConf) < 0.85 ? "warn" : "ok"],
+            ["SPEED",    `${weldSpeed} cm/min`, "ok"],
+            ["PYRO",     `${thermal} °C`, Number(thermal) > 420 ? "warn" : "ok"],
+            ["WIRE",     "8.2 m/min · ER70S-6", "ok"],
+            ["GAS",      "Ar/CO₂ 82/18 · 14 L/min", "ok"],
+            ["PLC",      "PLC-HRC-04 · RUN", "ok"],
+            ["ZOOM",     "1.00× · F-AUTO", "muted"],
+            ["ROI",      "X 540 Y 200 W 130 H 64", "muted"],
+          ].map(([k, v, tone]) => (
+            <div key={k as string} className="flex items-center gap-2 bg-[oklch(0.12_0.01_240/0.72)] border border-border px-1.5 py-[1px] rounded-sm">
+              <span className="text-muted-foreground">{k}</span>
+              <span style={{ color: tone === "warn" ? "var(--color-warn)" : tone === "muted" ? "var(--color-muted-foreground)" : "var(--color-cyan)" }}>{v}</span>
+            </div>
+          ))}
         </div>
 
         {/* Bottom HUD bar */}
-        <div className="absolute inset-x-0 bottom-0 bg-[oklch(0.12_0.01_240/0.85)] border-t border-border px-3 py-2 flex items-center gap-4 text-[10.5px] mono">
+        <div className="absolute inset-x-0 bottom-0 bg-[oklch(0.12_0.01_240/0.88)] border-t border-border px-3 py-2 flex items-center gap-3 text-[10.5px] mono">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">OVERLAY</span>
             <input
               type="range" min={0} max={100} value={opacity * 100}
               onChange={(e) => setOpacity(Number(e.target.value) / 100)}
-              className="accent-cyan h-1 w-28"
+              className="accent-cyan h-1 w-24"
             />
             <span className="text-foreground w-8">{Math.round(opacity * 100)}%</span>
           </div>
