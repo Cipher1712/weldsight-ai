@@ -15,12 +15,12 @@ type Channel = {
 };
 
 const CHANNELS: Channel[] = [
-  { id: "mig-i", label: "MIG Current",  unit: "A",  base: 215, amp: 18, color: "var(--color-cyan)" },
-  { id: "mig-v", label: "MIG Voltage",  unit: "V",  base: 24.6, amp: 1.6, color: "var(--color-stable)", spike: true },
-  { id: "tig-i", label: "TIG Current",  unit: "A",  base: 145, amp: 10, color: "var(--color-warn)" },
-  { id: "tig-v", label: "TIG Voltage",  unit: "V",  base: 12.4, amp: 0.9, color: "#9aa6ff" },
-  { id: "enc",   label: "Encoder",       unit: "Hz", base: 480, amp: 12, color: "#c9a8ff" },
-  { id: "arc",   label: "Arc Stability", unit: "idx",base: 0.92, amp: 0.05, color: "var(--color-stable)" },
+  { id: "PLC-HRC-04 · AI.MIG.I",  label: "MIG Arc Current",   unit: "A",   base: 215,  amp: 18,   color: "var(--color-cyan)" },
+  { id: "PLC-HRC-04 · AI.MIG.V",  label: "MIG Arc Voltage",   unit: "V",   base: 24.6, amp: 1.6,  color: "var(--color-stable)", spike: true },
+  { id: "PLC-HRC-04 · AI.TIG.I",  label: "TIG Arc Current",   unit: "A",   base: 145,  amp: 10,   color: "var(--color-warn)" },
+  { id: "OPC-BUS-A · TIG.V.RMS",  label: "TIG Voltage RMS",   unit: "V",   base: 12.4, amp: 0.9,  color: "#9aa6ff" },
+  { id: "ENC-MIG-02 · POS.HZ",    label: "Wire Feed Encoder", unit: "Hz",  base: 480,  amp: 12,   color: "#c9a8ff" },
+  { id: "AI.ARC.IDX",             label: "Arc Stability Idx", unit: "idx", base: 0.92, amp: 0.05, color: "var(--color-stable)" },
 ];
 
 function makeSeries(n: number, base: number, amp: number, t: number, spike = false) {
@@ -50,10 +50,13 @@ export function TelemetryEngine({ onSpike }: { onSpike: (v: number) => void }) {
   return (
     <div className="panel flex flex-col overflow-hidden">
       <div className="panel-header">
-        <div className="flex items-center gap-3">
-          <span className="panel-title">Real-Time Telemetry Engine · SCADA Bus</span>
-          <span className="chip chip-stable mono">PLC OK · 1 kHz · sync ±0.4 ms</span>
-          <span className="chip mono">CH 6/24 · ROLLING 60 s</span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="panel-title">Real-Time Telemetry Engine</span>
+          <span className="mono text-[10px] text-muted-foreground">·</span>
+          <span className="mono text-[10px] text-foreground">SCADA · OPC-UA · Kafka weld.telemetry.v3</span>
+          <span className="chip chip-stable mono">PLC-HRC-04 · 1 kHz</span>
+          <span className="chip chip-stable mono">SYNC Δ 0.4 ms</span>
+          <span className="chip mono">CH 6/24 · 60 s window</span>
         </div>
         <div className="flex items-center gap-1.5 text-[10.5px] mono">
           <button className="px-2 py-1 rounded bg-surface-3 border border-border-strong text-foreground">LIVE</button>
