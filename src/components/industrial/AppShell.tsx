@@ -67,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Sidebar brand strip */}
         <div className="h-[52px] flex items-center gap-2.5 px-3 border-b border-border bg-surface-2/50">
           <div className="h-8 w-8 rounded-sm border border-border-strong bg-surface-3 grid place-items-center">
-            <svg viewBox="0 0 32 32" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <svg viewBox="0 0 32 32" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 22 L11 10 L17 18 L22 12 L28 20" style={{ stroke: "var(--color-cyan)" }} />
               <circle cx="22" cy="12" r="1.8" fill="var(--color-critical)" stroke="none" />
             </svg>
