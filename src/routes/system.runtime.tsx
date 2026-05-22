@@ -46,7 +46,7 @@ function Runtime() {
           </div>
           <div className="panel p-3">
             <div className="font-serif text-[15px] text-foreground mb-2">Stream Uptime · 24 h</div>
-            <div className="grid grid-cols-24 gap-[2px]">
+            <div className="grid gap-[2px]" style={{ gridTemplateColumns: "repeat(96, minmax(0, 1fr))" }}>
               {Array.from({ length: 96 }).map((_, i) => {
                 const ok = !(i === 31 || i === 32 || i === 64);
                 return (
