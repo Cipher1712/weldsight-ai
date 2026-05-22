@@ -7,4 +7,16 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
   ],
+
+  ssr: {
+    noExternal: ["@tanstack/start"],
+    external: ["node:async_hooks"],
+  },
+
+  optimizeDeps: {
+    exclude: [
+      "@tanstack/start-storage-context",
+      "node:async_hooks",
+    ],
+  },
 });
