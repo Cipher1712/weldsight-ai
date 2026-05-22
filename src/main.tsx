@@ -1,13 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { RouterProvider } from "@tanstack/react-router";
+import { StartClient } from "@tanstack/react-start";
+import { createRouter } from "./router";
 
-import { router } from "./router";
+const router = createRouter();
 
-import "./styles.css";
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+export default function App() {
+  return <StartClient router={router} />;
+}
