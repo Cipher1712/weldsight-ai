@@ -9,38 +9,334 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ValidationRouteImport } from './routes/validation'
+import { Route as UploadTrainRouteImport } from './routes/upload-train'
+import { Route as ThresholdsRouteImport } from './routes/thresholds'
+import { Route as TelemetryRouteImport } from './routes/telemetry'
+import { Route as StreamControlRouteImport } from './routes/stream-control'
+import { Route as StationsRouteImport } from './routes/stations'
+import { Route as ReplayRouteImport } from './routes/replay'
+import { Route as ModelProfilesRouteImport } from './routes/model-profiles'
+import { Route as MetricsRouteImport } from './routes/metrics'
+import { Route as FftRouteImport } from './routes/fft'
+import { Route as AnomaliesRouteImport } from './routes/anomalies'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SystemWebsocketRouteImport } from './routes/system.websocket'
+import { Route as SystemRuntimeRouteImport } from './routes/system.runtime'
+import { Route as SystemEdgeRouteImport } from './routes/system.edge'
+import { Route as SystemApiHealthRouteImport } from './routes/system.api-health'
 
+const ValidationRoute = ValidationRouteImport.update({
+  id: '/validation',
+  path: '/validation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UploadTrainRoute = UploadTrainRouteImport.update({
+  id: '/upload-train',
+  path: '/upload-train',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThresholdsRoute = ThresholdsRouteImport.update({
+  id: '/thresholds',
+  path: '/thresholds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TelemetryRoute = TelemetryRouteImport.update({
+  id: '/telemetry',
+  path: '/telemetry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StreamControlRoute = StreamControlRouteImport.update({
+  id: '/stream-control',
+  path: '/stream-control',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationsRoute = StationsRouteImport.update({
+  id: '/stations',
+  path: '/stations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReplayRoute = ReplayRouteImport.update({
+  id: '/replay',
+  path: '/replay',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelProfilesRoute = ModelProfilesRouteImport.update({
+  id: '/model-profiles',
+  path: '/model-profiles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetricsRoute = MetricsRouteImport.update({
+  id: '/metrics',
+  path: '/metrics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FftRoute = FftRouteImport.update({
+  id: '/fft',
+  path: '/fft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnomaliesRoute = AnomaliesRouteImport.update({
+  id: '/anomalies',
+  path: '/anomalies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SystemWebsocketRoute = SystemWebsocketRouteImport.update({
+  id: '/system/websocket',
+  path: '/system/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemRuntimeRoute = SystemRuntimeRouteImport.update({
+  id: '/system/runtime',
+  path: '/system/runtime',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemEdgeRoute = SystemEdgeRouteImport.update({
+  id: '/system/edge',
+  path: '/system/edge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemApiHealthRoute = SystemApiHealthRouteImport.update({
+  id: '/system/api-health',
+  path: '/system/api-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/anomalies': typeof AnomaliesRoute
+  '/fft': typeof FftRoute
+  '/metrics': typeof MetricsRoute
+  '/model-profiles': typeof ModelProfilesRoute
+  '/replay': typeof ReplayRoute
+  '/stations': typeof StationsRoute
+  '/stream-control': typeof StreamControlRoute
+  '/telemetry': typeof TelemetryRoute
+  '/thresholds': typeof ThresholdsRoute
+  '/upload-train': typeof UploadTrainRoute
+  '/validation': typeof ValidationRoute
+  '/system/api-health': typeof SystemApiHealthRoute
+  '/system/edge': typeof SystemEdgeRoute
+  '/system/runtime': typeof SystemRuntimeRoute
+  '/system/websocket': typeof SystemWebsocketRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/anomalies': typeof AnomaliesRoute
+  '/fft': typeof FftRoute
+  '/metrics': typeof MetricsRoute
+  '/model-profiles': typeof ModelProfilesRoute
+  '/replay': typeof ReplayRoute
+  '/stations': typeof StationsRoute
+  '/stream-control': typeof StreamControlRoute
+  '/telemetry': typeof TelemetryRoute
+  '/thresholds': typeof ThresholdsRoute
+  '/upload-train': typeof UploadTrainRoute
+  '/validation': typeof ValidationRoute
+  '/system/api-health': typeof SystemApiHealthRoute
+  '/system/edge': typeof SystemEdgeRoute
+  '/system/runtime': typeof SystemRuntimeRoute
+  '/system/websocket': typeof SystemWebsocketRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/anomalies': typeof AnomaliesRoute
+  '/fft': typeof FftRoute
+  '/metrics': typeof MetricsRoute
+  '/model-profiles': typeof ModelProfilesRoute
+  '/replay': typeof ReplayRoute
+  '/stations': typeof StationsRoute
+  '/stream-control': typeof StreamControlRoute
+  '/telemetry': typeof TelemetryRoute
+  '/thresholds': typeof ThresholdsRoute
+  '/upload-train': typeof UploadTrainRoute
+  '/validation': typeof ValidationRoute
+  '/system/api-health': typeof SystemApiHealthRoute
+  '/system/edge': typeof SystemEdgeRoute
+  '/system/runtime': typeof SystemRuntimeRoute
+  '/system/websocket': typeof SystemWebsocketRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/anomalies'
+    | '/fft'
+    | '/metrics'
+    | '/model-profiles'
+    | '/replay'
+    | '/stations'
+    | '/stream-control'
+    | '/telemetry'
+    | '/thresholds'
+    | '/upload-train'
+    | '/validation'
+    | '/system/api-health'
+    | '/system/edge'
+    | '/system/runtime'
+    | '/system/websocket'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analytics'
+    | '/anomalies'
+    | '/fft'
+    | '/metrics'
+    | '/model-profiles'
+    | '/replay'
+    | '/stations'
+    | '/stream-control'
+    | '/telemetry'
+    | '/thresholds'
+    | '/upload-train'
+    | '/validation'
+    | '/system/api-health'
+    | '/system/edge'
+    | '/system/runtime'
+    | '/system/websocket'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/anomalies'
+    | '/fft'
+    | '/metrics'
+    | '/model-profiles'
+    | '/replay'
+    | '/stations'
+    | '/stream-control'
+    | '/telemetry'
+    | '/thresholds'
+    | '/upload-train'
+    | '/validation'
+    | '/system/api-health'
+    | '/system/edge'
+    | '/system/runtime'
+    | '/system/websocket'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  AnomaliesRoute: typeof AnomaliesRoute
+  FftRoute: typeof FftRoute
+  MetricsRoute: typeof MetricsRoute
+  ModelProfilesRoute: typeof ModelProfilesRoute
+  ReplayRoute: typeof ReplayRoute
+  StationsRoute: typeof StationsRoute
+  StreamControlRoute: typeof StreamControlRoute
+  TelemetryRoute: typeof TelemetryRoute
+  ThresholdsRoute: typeof ThresholdsRoute
+  UploadTrainRoute: typeof UploadTrainRoute
+  ValidationRoute: typeof ValidationRoute
+  SystemApiHealthRoute: typeof SystemApiHealthRoute
+  SystemEdgeRoute: typeof SystemEdgeRoute
+  SystemRuntimeRoute: typeof SystemRuntimeRoute
+  SystemWebsocketRoute: typeof SystemWebsocketRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/validation': {
+      id: '/validation'
+      path: '/validation'
+      fullPath: '/validation'
+      preLoaderRoute: typeof ValidationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/upload-train': {
+      id: '/upload-train'
+      path: '/upload-train'
+      fullPath: '/upload-train'
+      preLoaderRoute: typeof UploadTrainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thresholds': {
+      id: '/thresholds'
+      path: '/thresholds'
+      fullPath: '/thresholds'
+      preLoaderRoute: typeof ThresholdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/telemetry': {
+      id: '/telemetry'
+      path: '/telemetry'
+      fullPath: '/telemetry'
+      preLoaderRoute: typeof TelemetryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stream-control': {
+      id: '/stream-control'
+      path: '/stream-control'
+      fullPath: '/stream-control'
+      preLoaderRoute: typeof StreamControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stations': {
+      id: '/stations'
+      path: '/stations'
+      fullPath: '/stations'
+      preLoaderRoute: typeof StationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/replay': {
+      id: '/replay'
+      path: '/replay'
+      fullPath: '/replay'
+      preLoaderRoute: typeof ReplayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-profiles': {
+      id: '/model-profiles'
+      path: '/model-profiles'
+      fullPath: '/model-profiles'
+      preLoaderRoute: typeof ModelProfilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metrics': {
+      id: '/metrics'
+      path: '/metrics'
+      fullPath: '/metrics'
+      preLoaderRoute: typeof MetricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fft': {
+      id: '/fft'
+      path: '/fft'
+      fullPath: '/fft'
+      preLoaderRoute: typeof FftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anomalies': {
+      id: '/anomalies'
+      path: '/anomalies'
+      fullPath: '/anomalies'
+      preLoaderRoute: typeof AnomaliesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +344,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/system/websocket': {
+      id: '/system/websocket'
+      path: '/system/websocket'
+      fullPath: '/system/websocket'
+      preLoaderRoute: typeof SystemWebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system/runtime': {
+      id: '/system/runtime'
+      path: '/system/runtime'
+      fullPath: '/system/runtime'
+      preLoaderRoute: typeof SystemRuntimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system/edge': {
+      id: '/system/edge'
+      path: '/system/edge'
+      fullPath: '/system/edge'
+      preLoaderRoute: typeof SystemEdgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system/api-health': {
+      id: '/system/api-health'
+      path: '/system/api-health'
+      fullPath: '/system/api-health'
+      preLoaderRoute: typeof SystemApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  AnomaliesRoute: AnomaliesRoute,
+  FftRoute: FftRoute,
+  MetricsRoute: MetricsRoute,
+  ModelProfilesRoute: ModelProfilesRoute,
+  ReplayRoute: ReplayRoute,
+  StationsRoute: StationsRoute,
+  StreamControlRoute: StreamControlRoute,
+  TelemetryRoute: TelemetryRoute,
+  ThresholdsRoute: ThresholdsRoute,
+  UploadTrainRoute: UploadTrainRoute,
+  ValidationRoute: ValidationRoute,
+  SystemApiHealthRoute: SystemApiHealthRoute,
+  SystemEdgeRoute: SystemEdgeRoute,
+  SystemRuntimeRoute: SystemRuntimeRoute,
+  SystemWebsocketRoute: SystemWebsocketRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
