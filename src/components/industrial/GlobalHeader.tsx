@@ -36,24 +36,25 @@ export function GlobalHeader() {
     <header className="panel sticky top-0 z-30 rounded-none border-x-0 border-t-0">
       <div className="flex items-center justify-between gap-3 px-3 py-2 flex-wrap">
         {/* Brand */}
-        <div className="flex items-center gap-3 min-w-0 shrink-0">
-          <div className="relative h-9 w-9 rounded-sm border border-border-strong bg-surface-2 grid place-items-center overflow-hidden">
+        <div className="flex items-center gap-3.5 min-w-0 shrink-0 pr-4 mr-1 border-r border-border">
+          <div className="relative h-12 w-12 rounded-sm border border-border-strong bg-surface-2 grid place-items-center overflow-hidden">
             <div className="absolute inset-0 opacity-30" style={{
               background: "repeating-linear-gradient(135deg, color-mix(in oklch, var(--color-foreground) 6%, transparent) 0 1px, transparent 1px 4px)"
             }} />
-            <svg viewBox="0 0 32 32" className="h-5 w-5 relative" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <svg viewBox="0 0 32 32" className="h-7 w-7 relative" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 22 L11 10 L17 18 L22 12 L28 20" style={{ stroke: "var(--color-cyan)" }} />
               <circle cx="22" cy="12" r="1.8" fill="var(--color-critical)" stroke="none" />
               <path d="M2 28 H30" style={{ stroke: "var(--color-border-strong)" }} />
             </svg>
           </div>
           <div className="leading-tight">
-            <div className="mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">Tata Steel · Industry 4.0 · JSR-01</div>
-            <div className="flex items-baseline gap-2">
-              <span className="font-serif text-[18px] text-foreground tracking-tight">WeldSight</span>
-              <span className="mono text-[10px] tracking-[0.2em]" style={{ color: "var(--color-cyan)" }}>AI</span>
-              <span className="mono text-[9.5px] text-muted-foreground">v4.2.1</span>
+            <div className="mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Tata Steel · Industry 4.0 · JSR-01</div>
+            <div className="flex items-baseline gap-2 mt-0.5">
+              <span className="font-serif text-[24px] text-foreground tracking-tight leading-none">WeldSight</span>
+              <span className="mono text-[11px] tracking-[0.22em]" style={{ color: "var(--color-cyan)" }}>AI</span>
+              <span className="mono text-[10px] text-muted-foreground">v4.2.1</span>
             </div>
+            <div className="mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground/80 mt-1">Adaptive Weld Intelligence Platform</div>
           </div>
         </div>
 
