@@ -34,9 +34,9 @@ export function GlobalHeader() {
 
   return (
     <header className="panel sticky top-0 z-30 rounded-none border-x-0 border-t-0">
-      <div className="flex items-center justify-between gap-4 px-4 py-2">
+      <div className="flex items-center justify-between gap-3 px-3 py-2 flex-wrap">
         {/* Brand */}
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex items-center gap-3 min-w-0 shrink-0">
           <div className="relative h-9 w-9 rounded-sm border border-border-strong bg-surface-2 grid place-items-center overflow-hidden">
             <div className="absolute inset-0 opacity-30" style={{
               background: "repeating-linear-gradient(135deg, color-mix(in oklch, var(--color-foreground) 6%, transparent) 0 1px, transparent 1px 4px)"
@@ -48,17 +48,17 @@ export function GlobalHeader() {
             </svg>
           </div>
           <div className="leading-tight">
-            <div className="mono text-[9.5px] uppercase tracking-[0.24em] text-muted-foreground">Tata Steel · Industry 4.0 · JSR-01</div>
+            <div className="mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">Tata Steel · Industry 4.0 · JSR-01</div>
             <div className="flex items-baseline gap-2">
               <span className="font-serif text-[18px] text-foreground tracking-tight">WeldSight</span>
-              <span className="mono text-[10px] tracking-[0.2em] text-cyan-foreground" style={{ color: "var(--color-cyan)" }}>AI</span>
+              <span className="mono text-[10px] tracking-[0.2em]" style={{ color: "var(--color-cyan)" }}>AI</span>
               <span className="mono text-[9.5px] text-muted-foreground">v4.2.1</span>
             </div>
           </div>
         </div>
 
-        {/* Context breadcrumb */}
-        <div className="hidden lg:flex items-center gap-px text-[11px] mono bg-surface/60 border border-border rounded-sm overflow-hidden">
+        {/* Context breadcrumb — only on very wide screens */}
+        <div className="hidden 2xl:flex items-center gap-px text-[11px] mono bg-surface/60 border border-border rounded-sm overflow-hidden shrink-0">
           <Ctx k="PLANT" v="JSR-01" />
           <Sep />
           <Ctx k="LINE"  v="HRC-04" />
@@ -72,17 +72,30 @@ export function GlobalHeader() {
           <Ctx k="OP"      v="2241 · R.MAHATO" />
         </div>
 
+        {/* Compact breadcrumb for mid widths */}
+        <div className="hidden md:flex 2xl:hidden items-center gap-px text-[11px] mono bg-surface/60 border border-border rounded-sm overflow-hidden shrink-0">
+          <Ctx k="STATION" v="WS-07" />
+          <Sep />
+          <Ctx k="LINE" v="HRC-04" />
+          <Sep />
+          <Ctx k="SHIFT" v="B" />
+        </div>
+
         {/* Status cluster */}
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-end ml-auto">
+          <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
             {stat("AI",   "ONLINE", "ok")}
-            {stat("PLC",  "LINK", "ok")}
             {stat("EDGE", "OK", "ok")}
-            {stat("CAM",  "1080·60", "ok")}
-            {stat("KAFKA","0.4ms", "warn")}
-            {stat("INF",  "12.4ms", "ok")}
+            <div className="hidden lg:flex items-center gap-1.5">
+              {stat("PLC",  "LINK", "ok")}
+              {stat("CAM",  "1080·60", "ok")}
+            </div>
+            <div className="hidden xl:flex items-center gap-1.5">
+              {stat("KAFKA","0.4ms", "warn")}
+              {stat("INF",  "12.4ms", "ok")}
+            </div>
           </div>
-          <div className="h-7 w-px bg-border" />
+          <div className="h-7 w-px bg-border hidden sm:block" />
 
           {/* Theme toggle */}
           <div className="flex items-center rounded-sm border border-border bg-surface-2 overflow-hidden text-[10px] mono">
@@ -99,7 +112,7 @@ export function GlobalHeader() {
           <div className="h-7 w-px bg-border" />
           <div className="text-right leading-tight">
             <div className="mono text-[11px] text-foreground">{time}</div>
-            <div className="mono text-[9.5px] text-muted-foreground">UPTIME 42d·06:18:51</div>
+            <div className="mono text-[9px] text-muted-foreground">UPTIME 42d·06:18:51</div>
           </div>
         </div>
       </div>
