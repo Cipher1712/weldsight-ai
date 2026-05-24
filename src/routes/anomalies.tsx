@@ -112,6 +112,39 @@ function AnomaliesPage() {
           <SectionLabel title="Operator Queue" />
           <AlertCenter />
         </section>
+
+        <section>
+          <SectionLabel title="Detection Pipeline · Adaptive Threshold Status" sub="WELD-VISION v4.2 · per-channel σ bands" />
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
+            {[
+              ["MIG.V",   "σ 0.52", "0.184", "HIGH",     "var(--color-high)"],
+              ["MIG.I",   "σ 0.47", "0.061", "STABLE",   "var(--color-stable)"],
+              ["VISION",  "σ 0.61", "0.221", "CRITICAL", "var(--color-critical)"],
+              ["AI.IDX",  "σ 0.55", "0.092", "MODERATE", "var(--color-warn)"],
+              ["PYRO",    "σ 0.49", "0.137", "HIGH",     "var(--color-high)"],
+              ["FFT",     "σ 0.58", "0.058", "MODERATE", "var(--color-warn)"],
+            ].map(([ch, band, err, state, color]) => (
+              <div key={ch} className="panel px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <div className="mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{ch}</div>
+                  <span className="mono text-[9px]" style={{ color: color as string }}>● {state}</span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1.5">
+                  <div className="mono text-[15px] text-foreground">{err}</div>
+                  <div className="mono text-[9.5px] text-muted-foreground">{band}</div>
+                </div>
+                <div className="mt-1.5 h-1 bg-surface-2 rounded-full overflow-hidden">
+                  <div className="h-full" style={{ width: `${Math.min(100, parseFloat(err as string) * 380)}%`, background: color as string }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <footer className="mono text-[10px] text-muted-foreground flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2 pb-4">
+          <span>© Tata Steel · WeldSight AI · Anomaly Intelligence Center · WELD-VISION v4.2</span>
+          <span>14 active · 3 critical · μ recon 0.118 · adaptive σ rebuild every 60 s · Kafka weld.telemetry.v3</span>
+        </footer>
       </div>
     </>
   );
