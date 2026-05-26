@@ -92,7 +92,17 @@ function TelemetryPage() {
           <SectionLabel title="Signal Channels · FFT · Spectral" />
           <TelemetryEngine onSpike={setSpike} />
         </section>
+
+        <section>
+          <SectionLabel
+            title="Physics ↔ AI consensus"
+            sub="how each live channel maps onto a physical defect signature"
+            right={<Link to="/physics" className="chip mono">PHYSICS ENGINE · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+        </section>
       </div>
     </>
   );
 }
+
