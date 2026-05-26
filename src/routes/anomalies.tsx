@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { AIDefectPanel } from "@/components/industrial/AIDefectPanel";
 import { DefectHeatmap } from "@/components/industrial/DefectHeatmap";
 import { SyncTimeline } from "@/components/industrial/SyncTimeline";
 import { AlertCenter } from "@/components/industrial/AlertCenter";
+import { PHYSICS_DEFECTS, PhysicsSignaturePanel, PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
+
 
 export const Route = createFileRoute("/anomalies")({
   head: () => ({ meta: [{ title: "Anomaly Center · WeldSight AI" }] }),
