@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { TelemetryEngine } from "@/components/industrial/TelemetryEngine";
 import { WeldInspectionView } from "@/components/industrial/WeldInspectionView";
+import { PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
 import { Play, Square, Rewind, Pause } from "lucide-react";
+
 
 export const Route = createFileRoute("/telemetry")({
   head: () => ({ meta: [{ title: "Live Telemetry · WeldSight AI" }] }),
@@ -90,7 +92,17 @@ function TelemetryPage() {
           <SectionLabel title="Signal Channels · FFT · Spectral" />
           <TelemetryEngine onSpike={setSpike} />
         </section>
+
+        <section>
+          <SectionLabel
+            title="Physics ↔ AI consensus"
+            sub="how each live channel maps onto a physical defect signature"
+            right={<Link to="/physics" className="chip mono">PHYSICS ENGINE · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+        </section>
       </div>
     </>
   );
 }
+

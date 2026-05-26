@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { AIDefectPanel } from "@/components/industrial/AIDefectPanel";
 import { DefectHeatmap } from "@/components/industrial/DefectHeatmap";
 import { SyncTimeline } from "@/components/industrial/SyncTimeline";
 import { AlertCenter } from "@/components/industrial/AlertCenter";
+import { PHYSICS_DEFECTS, PhysicsSignaturePanel, PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
+
 
 export const Route = createFileRoute("/anomalies")({
   head: () => ({ meta: [{ title: "Anomaly Center · WeldSight AI" }] }),
@@ -101,12 +103,25 @@ function AnomaliesPage() {
         </section>
 
         <section>
+          <SectionLabel
+            title="Physics Signature Intelligence"
+            sub="why · how · governing equations"
+            right={<Link to="/physics" className="chip mono">OPEN PHYSICS · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+          <div className="grid grid-cols-1 gap-3 mt-3">
+            {PHYSICS_DEFECTS.slice(0, 2).map(d => <PhysicsSignaturePanel key={d.id} d={d} />)}
+          </div>
+        </section>
+
+        <section>
           <SectionLabel title="Correlation · Heatmap · Synchronization" sub="cross-station · last 60 min" />
           <div className="grid grid-cols-1 xl:grid-cols-[1.1fr_1fr] gap-3" style={{ minHeight: 340 }}>
             <DefectHeatmap />
             <SyncTimeline />
           </div>
         </section>
+
 
         <section>
           <SectionLabel title="Operator Queue" />

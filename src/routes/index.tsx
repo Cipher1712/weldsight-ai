@@ -6,7 +6,9 @@ import { WeldInspectionView } from "@/components/industrial/WeldInspectionView";
 import { AIDefectPanel } from "@/components/industrial/AIDefectPanel";
 import { StationGrid } from "@/components/industrial/StationGrid";
 import { AlertCenter } from "@/components/industrial/AlertCenter";
-import { ArrowUpRight, Activity, AlertOctagon, UploadCloud } from "lucide-react";
+import { ArrowUpRight, Activity, AlertOctagon, UploadCloud, Atom } from "lucide-react";
+import { PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -85,9 +87,19 @@ function Overview() {
         </section>
 
         <section>
+          <SectionLabel
+            title="Physics Signature Intelligence"
+            sub="AI ↔ physics consensus across active defect signatures"
+            right={<Link to="/physics" className="chip mono">PHYSICS ENGINE · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+        </section>
+
+        <section>
           <SectionLabel title="Station State Matrix" sub="HRC-LINE-04 · health, AI confidence, throughput" />
           <StationGrid />
         </section>
+
 
         <section>
           <SectionLabel title="Active Event Queue" sub="acknowledgement · escalation" />

@@ -9,16 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as XaiRouteImport } from './routes/xai'
+import { Route as WaveletsRouteImport } from './routes/wavelets'
 import { Route as ValidationRouteImport } from './routes/validation'
 import { Route as UploadTrainRouteImport } from './routes/upload-train'
 import { Route as ThresholdsRouteImport } from './routes/thresholds'
+import { Route as ThresholdEvolutionRouteImport } from './routes/threshold-evolution'
 import { Route as TelemetryRouteImport } from './routes/telemetry'
 import { Route as StreamControlRouteImport } from './routes/stream-control'
 import { Route as StationsRouteImport } from './routes/stations'
+import { Route as StandardsRouteImport } from './routes/standards'
+import { Route as SpectralRouteImport } from './routes/spectral'
+import { Route as ResearchExportRouteImport } from './routes/research-export'
 import { Route as ReplayRouteImport } from './routes/replay'
+import { Route as PredictiveFailureRouteImport } from './routes/predictive-failure'
+import { Route as PhysicsRouteImport } from './routes/physics'
+import { Route as ModelValidationRouteImport } from './routes/model-validation'
 import { Route as ModelProfilesRouteImport } from './routes/model-profiles'
 import { Route as MetricsRouteImport } from './routes/metrics'
+import { Route as LatentRouteImport } from './routes/latent'
+import { Route as FusionRouteImport } from './routes/fusion'
 import { Route as FftRouteImport } from './routes/fft'
+import { Route as FeaturesRouteImport } from './routes/features'
+import { Route as DriftRouteImport } from './routes/drift'
+import { Route as DefectEvolutionRouteImport } from './routes/defect-evolution'
+import { Route as DatasetRouteImport } from './routes/dataset'
+import { Route as CorrelationRouteImport } from './routes/correlation'
 import { Route as AnomaliesRouteImport } from './routes/anomalies'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
@@ -27,6 +43,16 @@ import { Route as SystemRuntimeRouteImport } from './routes/system.runtime'
 import { Route as SystemEdgeRouteImport } from './routes/system.edge'
 import { Route as SystemApiHealthRouteImport } from './routes/system.api-health'
 
+const XaiRoute = XaiRouteImport.update({
+  id: '/xai',
+  path: '/xai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WaveletsRoute = WaveletsRouteImport.update({
+  id: '/wavelets',
+  path: '/wavelets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ValidationRoute = ValidationRouteImport.update({
   id: '/validation',
   path: '/validation',
@@ -40,6 +66,11 @@ const UploadTrainRoute = UploadTrainRouteImport.update({
 const ThresholdsRoute = ThresholdsRouteImport.update({
   id: '/thresholds',
   path: '/thresholds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThresholdEvolutionRoute = ThresholdEvolutionRouteImport.update({
+  id: '/threshold-evolution',
+  path: '/threshold-evolution',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TelemetryRoute = TelemetryRouteImport.update({
@@ -57,9 +88,39 @@ const StationsRoute = StationsRouteImport.update({
   path: '/stations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StandardsRoute = StandardsRouteImport.update({
+  id: '/standards',
+  path: '/standards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpectralRoute = SpectralRouteImport.update({
+  id: '/spectral',
+  path: '/spectral',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchExportRoute = ResearchExportRouteImport.update({
+  id: '/research-export',
+  path: '/research-export',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReplayRoute = ReplayRouteImport.update({
   id: '/replay',
   path: '/replay',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PredictiveFailureRoute = PredictiveFailureRouteImport.update({
+  id: '/predictive-failure',
+  path: '/predictive-failure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhysicsRoute = PhysicsRouteImport.update({
+  id: '/physics',
+  path: '/physics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelValidationRoute = ModelValidationRouteImport.update({
+  id: '/model-validation',
+  path: '/model-validation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModelProfilesRoute = ModelProfilesRouteImport.update({
@@ -72,9 +133,44 @@ const MetricsRoute = MetricsRouteImport.update({
   path: '/metrics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LatentRoute = LatentRouteImport.update({
+  id: '/latent',
+  path: '/latent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FusionRoute = FusionRouteImport.update({
+  id: '/fusion',
+  path: '/fusion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FftRoute = FftRouteImport.update({
   id: '/fft',
   path: '/fft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DriftRoute = DriftRouteImport.update({
+  id: '/drift',
+  path: '/drift',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DefectEvolutionRoute = DefectEvolutionRouteImport.update({
+  id: '/defect-evolution',
+  path: '/defect-evolution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatasetRoute = DatasetRouteImport.update({
+  id: '/dataset',
+  path: '/dataset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorrelationRoute = CorrelationRouteImport.update({
+  id: '/correlation',
+  path: '/correlation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnomaliesRoute = AnomaliesRouteImport.update({
@@ -117,16 +213,32 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/anomalies': typeof AnomaliesRoute
+  '/correlation': typeof CorrelationRoute
+  '/dataset': typeof DatasetRoute
+  '/defect-evolution': typeof DefectEvolutionRoute
+  '/drift': typeof DriftRoute
+  '/features': typeof FeaturesRoute
   '/fft': typeof FftRoute
+  '/fusion': typeof FusionRoute
+  '/latent': typeof LatentRoute
   '/metrics': typeof MetricsRoute
   '/model-profiles': typeof ModelProfilesRoute
+  '/model-validation': typeof ModelValidationRoute
+  '/physics': typeof PhysicsRoute
+  '/predictive-failure': typeof PredictiveFailureRoute
   '/replay': typeof ReplayRoute
+  '/research-export': typeof ResearchExportRoute
+  '/spectral': typeof SpectralRoute
+  '/standards': typeof StandardsRoute
   '/stations': typeof StationsRoute
   '/stream-control': typeof StreamControlRoute
   '/telemetry': typeof TelemetryRoute
+  '/threshold-evolution': typeof ThresholdEvolutionRoute
   '/thresholds': typeof ThresholdsRoute
   '/upload-train': typeof UploadTrainRoute
   '/validation': typeof ValidationRoute
+  '/wavelets': typeof WaveletsRoute
+  '/xai': typeof XaiRoute
   '/system/api-health': typeof SystemApiHealthRoute
   '/system/edge': typeof SystemEdgeRoute
   '/system/runtime': typeof SystemRuntimeRoute
@@ -136,16 +248,32 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/anomalies': typeof AnomaliesRoute
+  '/correlation': typeof CorrelationRoute
+  '/dataset': typeof DatasetRoute
+  '/defect-evolution': typeof DefectEvolutionRoute
+  '/drift': typeof DriftRoute
+  '/features': typeof FeaturesRoute
   '/fft': typeof FftRoute
+  '/fusion': typeof FusionRoute
+  '/latent': typeof LatentRoute
   '/metrics': typeof MetricsRoute
   '/model-profiles': typeof ModelProfilesRoute
+  '/model-validation': typeof ModelValidationRoute
+  '/physics': typeof PhysicsRoute
+  '/predictive-failure': typeof PredictiveFailureRoute
   '/replay': typeof ReplayRoute
+  '/research-export': typeof ResearchExportRoute
+  '/spectral': typeof SpectralRoute
+  '/standards': typeof StandardsRoute
   '/stations': typeof StationsRoute
   '/stream-control': typeof StreamControlRoute
   '/telemetry': typeof TelemetryRoute
+  '/threshold-evolution': typeof ThresholdEvolutionRoute
   '/thresholds': typeof ThresholdsRoute
   '/upload-train': typeof UploadTrainRoute
   '/validation': typeof ValidationRoute
+  '/wavelets': typeof WaveletsRoute
+  '/xai': typeof XaiRoute
   '/system/api-health': typeof SystemApiHealthRoute
   '/system/edge': typeof SystemEdgeRoute
   '/system/runtime': typeof SystemRuntimeRoute
@@ -156,16 +284,32 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/anomalies': typeof AnomaliesRoute
+  '/correlation': typeof CorrelationRoute
+  '/dataset': typeof DatasetRoute
+  '/defect-evolution': typeof DefectEvolutionRoute
+  '/drift': typeof DriftRoute
+  '/features': typeof FeaturesRoute
   '/fft': typeof FftRoute
+  '/fusion': typeof FusionRoute
+  '/latent': typeof LatentRoute
   '/metrics': typeof MetricsRoute
   '/model-profiles': typeof ModelProfilesRoute
+  '/model-validation': typeof ModelValidationRoute
+  '/physics': typeof PhysicsRoute
+  '/predictive-failure': typeof PredictiveFailureRoute
   '/replay': typeof ReplayRoute
+  '/research-export': typeof ResearchExportRoute
+  '/spectral': typeof SpectralRoute
+  '/standards': typeof StandardsRoute
   '/stations': typeof StationsRoute
   '/stream-control': typeof StreamControlRoute
   '/telemetry': typeof TelemetryRoute
+  '/threshold-evolution': typeof ThresholdEvolutionRoute
   '/thresholds': typeof ThresholdsRoute
   '/upload-train': typeof UploadTrainRoute
   '/validation': typeof ValidationRoute
+  '/wavelets': typeof WaveletsRoute
+  '/xai': typeof XaiRoute
   '/system/api-health': typeof SystemApiHealthRoute
   '/system/edge': typeof SystemEdgeRoute
   '/system/runtime': typeof SystemRuntimeRoute
@@ -177,16 +321,32 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/anomalies'
+    | '/correlation'
+    | '/dataset'
+    | '/defect-evolution'
+    | '/drift'
+    | '/features'
     | '/fft'
+    | '/fusion'
+    | '/latent'
     | '/metrics'
     | '/model-profiles'
+    | '/model-validation'
+    | '/physics'
+    | '/predictive-failure'
     | '/replay'
+    | '/research-export'
+    | '/spectral'
+    | '/standards'
     | '/stations'
     | '/stream-control'
     | '/telemetry'
+    | '/threshold-evolution'
     | '/thresholds'
     | '/upload-train'
     | '/validation'
+    | '/wavelets'
+    | '/xai'
     | '/system/api-health'
     | '/system/edge'
     | '/system/runtime'
@@ -196,16 +356,32 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/anomalies'
+    | '/correlation'
+    | '/dataset'
+    | '/defect-evolution'
+    | '/drift'
+    | '/features'
     | '/fft'
+    | '/fusion'
+    | '/latent'
     | '/metrics'
     | '/model-profiles'
+    | '/model-validation'
+    | '/physics'
+    | '/predictive-failure'
     | '/replay'
+    | '/research-export'
+    | '/spectral'
+    | '/standards'
     | '/stations'
     | '/stream-control'
     | '/telemetry'
+    | '/threshold-evolution'
     | '/thresholds'
     | '/upload-train'
     | '/validation'
+    | '/wavelets'
+    | '/xai'
     | '/system/api-health'
     | '/system/edge'
     | '/system/runtime'
@@ -215,16 +391,32 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/anomalies'
+    | '/correlation'
+    | '/dataset'
+    | '/defect-evolution'
+    | '/drift'
+    | '/features'
     | '/fft'
+    | '/fusion'
+    | '/latent'
     | '/metrics'
     | '/model-profiles'
+    | '/model-validation'
+    | '/physics'
+    | '/predictive-failure'
     | '/replay'
+    | '/research-export'
+    | '/spectral'
+    | '/standards'
     | '/stations'
     | '/stream-control'
     | '/telemetry'
+    | '/threshold-evolution'
     | '/thresholds'
     | '/upload-train'
     | '/validation'
+    | '/wavelets'
+    | '/xai'
     | '/system/api-health'
     | '/system/edge'
     | '/system/runtime'
@@ -235,16 +427,32 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AnomaliesRoute: typeof AnomaliesRoute
+  CorrelationRoute: typeof CorrelationRoute
+  DatasetRoute: typeof DatasetRoute
+  DefectEvolutionRoute: typeof DefectEvolutionRoute
+  DriftRoute: typeof DriftRoute
+  FeaturesRoute: typeof FeaturesRoute
   FftRoute: typeof FftRoute
+  FusionRoute: typeof FusionRoute
+  LatentRoute: typeof LatentRoute
   MetricsRoute: typeof MetricsRoute
   ModelProfilesRoute: typeof ModelProfilesRoute
+  ModelValidationRoute: typeof ModelValidationRoute
+  PhysicsRoute: typeof PhysicsRoute
+  PredictiveFailureRoute: typeof PredictiveFailureRoute
   ReplayRoute: typeof ReplayRoute
+  ResearchExportRoute: typeof ResearchExportRoute
+  SpectralRoute: typeof SpectralRoute
+  StandardsRoute: typeof StandardsRoute
   StationsRoute: typeof StationsRoute
   StreamControlRoute: typeof StreamControlRoute
   TelemetryRoute: typeof TelemetryRoute
+  ThresholdEvolutionRoute: typeof ThresholdEvolutionRoute
   ThresholdsRoute: typeof ThresholdsRoute
   UploadTrainRoute: typeof UploadTrainRoute
   ValidationRoute: typeof ValidationRoute
+  WaveletsRoute: typeof WaveletsRoute
+  XaiRoute: typeof XaiRoute
   SystemApiHealthRoute: typeof SystemApiHealthRoute
   SystemEdgeRoute: typeof SystemEdgeRoute
   SystemRuntimeRoute: typeof SystemRuntimeRoute
@@ -253,6 +461,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/xai': {
+      id: '/xai'
+      path: '/xai'
+      fullPath: '/xai'
+      preLoaderRoute: typeof XaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wavelets': {
+      id: '/wavelets'
+      path: '/wavelets'
+      fullPath: '/wavelets'
+      preLoaderRoute: typeof WaveletsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/validation': {
       id: '/validation'
       path: '/validation'
@@ -272,6 +494,13 @@ declare module '@tanstack/react-router' {
       path: '/thresholds'
       fullPath: '/thresholds'
       preLoaderRoute: typeof ThresholdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/threshold-evolution': {
+      id: '/threshold-evolution'
+      path: '/threshold-evolution'
+      fullPath: '/threshold-evolution'
+      preLoaderRoute: typeof ThresholdEvolutionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/telemetry': {
@@ -295,11 +524,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/standards': {
+      id: '/standards'
+      path: '/standards'
+      fullPath: '/standards'
+      preLoaderRoute: typeof StandardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spectral': {
+      id: '/spectral'
+      path: '/spectral'
+      fullPath: '/spectral'
+      preLoaderRoute: typeof SpectralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research-export': {
+      id: '/research-export'
+      path: '/research-export'
+      fullPath: '/research-export'
+      preLoaderRoute: typeof ResearchExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/replay': {
       id: '/replay'
       path: '/replay'
       fullPath: '/replay'
       preLoaderRoute: typeof ReplayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/predictive-failure': {
+      id: '/predictive-failure'
+      path: '/predictive-failure'
+      fullPath: '/predictive-failure'
+      preLoaderRoute: typeof PredictiveFailureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/physics': {
+      id: '/physics'
+      path: '/physics'
+      fullPath: '/physics'
+      preLoaderRoute: typeof PhysicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-validation': {
+      id: '/model-validation'
+      path: '/model-validation'
+      fullPath: '/model-validation'
+      preLoaderRoute: typeof ModelValidationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/model-profiles': {
@@ -316,11 +587,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MetricsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/latent': {
+      id: '/latent'
+      path: '/latent'
+      fullPath: '/latent'
+      preLoaderRoute: typeof LatentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fusion': {
+      id: '/fusion'
+      path: '/fusion'
+      fullPath: '/fusion'
+      preLoaderRoute: typeof FusionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fft': {
       id: '/fft'
       path: '/fft'
       fullPath: '/fft'
       preLoaderRoute: typeof FftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drift': {
+      id: '/drift'
+      path: '/drift'
+      fullPath: '/drift'
+      preLoaderRoute: typeof DriftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/defect-evolution': {
+      id: '/defect-evolution'
+      path: '/defect-evolution'
+      fullPath: '/defect-evolution'
+      preLoaderRoute: typeof DefectEvolutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dataset': {
+      id: '/dataset'
+      path: '/dataset'
+      fullPath: '/dataset'
+      preLoaderRoute: typeof DatasetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/correlation': {
+      id: '/correlation'
+      path: '/correlation'
+      fullPath: '/correlation'
+      preLoaderRoute: typeof CorrelationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/anomalies': {
@@ -379,16 +699,32 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   AnomaliesRoute: AnomaliesRoute,
+  CorrelationRoute: CorrelationRoute,
+  DatasetRoute: DatasetRoute,
+  DefectEvolutionRoute: DefectEvolutionRoute,
+  DriftRoute: DriftRoute,
+  FeaturesRoute: FeaturesRoute,
   FftRoute: FftRoute,
+  FusionRoute: FusionRoute,
+  LatentRoute: LatentRoute,
   MetricsRoute: MetricsRoute,
   ModelProfilesRoute: ModelProfilesRoute,
+  ModelValidationRoute: ModelValidationRoute,
+  PhysicsRoute: PhysicsRoute,
+  PredictiveFailureRoute: PredictiveFailureRoute,
   ReplayRoute: ReplayRoute,
+  ResearchExportRoute: ResearchExportRoute,
+  SpectralRoute: SpectralRoute,
+  StandardsRoute: StandardsRoute,
   StationsRoute: StationsRoute,
   StreamControlRoute: StreamControlRoute,
   TelemetryRoute: TelemetryRoute,
+  ThresholdEvolutionRoute: ThresholdEvolutionRoute,
   ThresholdsRoute: ThresholdsRoute,
   UploadTrainRoute: UploadTrainRoute,
   ValidationRoute: ValidationRoute,
+  WaveletsRoute: WaveletsRoute,
+  XaiRoute: XaiRoute,
   SystemApiHealthRoute: SystemApiHealthRoute,
   SystemEdgeRoute: SystemEdgeRoute,
   SystemRuntimeRoute: SystemRuntimeRoute,

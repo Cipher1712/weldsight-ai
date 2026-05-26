@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { SyncTimeline } from "@/components/industrial/SyncTimeline";
+import { PHYSICS_DEFECTS, PhysicsSignaturePanel } from "@/components/industrial/PhysicsSignature";
 import { Rewind, FastForward, Play } from "lucide-react";
+
 
 export const Route = createFileRoute("/replay")({
   head: () => ({ meta: [{ title: "Replay Engine · WeldSight AI" }] }),
@@ -36,7 +38,14 @@ function Replay() {
         </div>
         <SectionLabel title="Synchronized Event Timeline" />
         <SyncTimeline />
+        <SectionLabel
+          title="Physics signature at incident"
+          sub="why the model fired at T+01:49"
+          right={<Link to="/physics" className="chip mono">FULL PHYSICS · PHX →</Link>}
+        />
+        <PhysicsSignaturePanel d={PHYSICS_DEFECTS[0]} compact />
       </div>
     </>
   );
 }
+

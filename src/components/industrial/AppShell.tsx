@@ -6,6 +6,8 @@ import {
   BarChart3, Waves, LineChart, ShieldCheck,
   HeartPulse, Cable, Cpu, Server,
   ChevronLeft, ChevronRight, Search,
+  Atom, Brain, GitBranch, Sigma, Network, Wand2,
+  Layers, Combine, Database, Wrench, Download, BookCheck, TrendingUp,
 } from "lucide-react";
 import { GlobalHeader } from "./GlobalHeader";
 
@@ -24,12 +26,30 @@ const NAV: NavSection[] = [
     ],
   },
   {
+    title: "Intelligence",
+    items: [
+      { to: "/physics",            label: "Physics Signature",         icon: Atom,    code: "PHX" },
+      { to: "/xai",                label: "Inference Reasoning",       icon: Brain,   code: "XAI" },
+      { to: "/latent",             label: "Latent Defect Space",       icon: GitBranch, code: "LAT" },
+      { to: "/model-validation",   label: "Model Validation",          icon: Sigma,   code: "MVA" },
+      { to: "/correlation",        label: "Signal Correlation",        icon: Network, code: "COR" },
+      { to: "/threshold-evolution",label: "Adaptive Thresholds",       icon: Wand2,   code: "ATI" },
+      { to: "/spectral",           label: "Spectral Intelligence",     icon: Waves,   code: "SPI" },
+      { to: "/wavelets",           label: "Wavelet Intelligence",      icon: Layers,  code: "WVL" },
+      { to: "/defect-evolution",   label: "Defect Formation",          icon: TrendingUp, code: "DFT" },
+      { to: "/fusion",             label: "Fusion Intelligence",       icon: Combine, code: "FUS" },
+      { to: "/drift",              label: "AI Drift",                  icon: Activity,code: "DRF" },
+    ],
+  },
+  {
     title: "AI & Training",
     items: [
       { to: "/upload-train",     label: "Upload & Train",           icon: UploadCloud,  code: "TRN" },
+      { to: "/dataset",          label: "Dataset Intelligence",     icon: Database,     code: "DSI" },
       { to: "/model-profiles",   label: "Model Profiles",           icon: Boxes,        code: "MDL" },
       { to: "/thresholds",       label: "Threshold Management",     icon: SlidersHorizontal, code: "THR" },
       { to: "/replay",           label: "Replay Engine",            icon: History,      code: "RPL" },
+      { to: "/features",         label: "Feature Distributions",    icon: BarChart3,    code: "FDX" },
     ],
   },
   {
@@ -39,6 +59,9 @@ const NAV: NavSection[] = [
       { to: "/fft",              label: "FFT & Spectral Analysis",  icon: Waves,        code: "FFT" },
       { to: "/metrics",          label: "Metrics Explorer",         icon: LineChart,    code: "MET" },
       { to: "/validation",       label: "Validation Standards",     icon: ShieldCheck,  code: "VAL" },
+      { to: "/standards",        label: "Standards Compliance",     icon: BookCheck,    code: "STD" },
+      { to: "/predictive-failure", label: "Predictive Maintenance", icon: Wrench,       code: "PFA" },
+      { to: "/research-export",  label: "Research Export",          icon: Download,     code: "RXH" },
     ],
   },
   {
@@ -51,6 +74,7 @@ const NAV: NavSection[] = [
     ],
   },
 ];
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
