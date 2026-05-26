@@ -87,9 +87,19 @@ function Overview() {
         </section>
 
         <section>
+          <SectionLabel
+            title="Physics Signature Intelligence"
+            sub="AI ↔ physics consensus across active defect signatures"
+            right={<Link to="/physics" className="chip mono">PHYSICS ENGINE · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+        </section>
+
+        <section>
           <SectionLabel title="Station State Matrix" sub="HRC-LINE-04 · health, AI confidence, throughput" />
           <StationGrid />
         </section>
+
 
         <section>
           <SectionLabel title="Active Event Queue" sub="acknowledgement · escalation" />
