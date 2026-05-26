@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { TelemetryEngine } from "@/components/industrial/TelemetryEngine";
 import { WeldInspectionView } from "@/components/industrial/WeldInspectionView";
+import { PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
 import { Play, Square, Rewind, Pause } from "lucide-react";
+
 
 export const Route = createFileRoute("/telemetry")({
   head: () => ({ meta: [{ title: "Live Telemetry · WeldSight AI" }] }),
