@@ -103,12 +103,25 @@ function AnomaliesPage() {
         </section>
 
         <section>
+          <SectionLabel
+            title="Physics Signature Intelligence"
+            sub="why · how · governing equations"
+            right={<Link to="/physics" className="chip mono">OPEN PHYSICS · PHX →</Link>}
+          />
+          <PhysicsConsensusStrip />
+          <div className="grid grid-cols-1 gap-3 mt-3">
+            {PHYSICS_DEFECTS.slice(0, 2).map(d => <PhysicsSignaturePanel key={d.id} d={d} />)}
+          </div>
+        </section>
+
+        <section>
           <SectionLabel title="Correlation · Heatmap · Synchronization" sub="cross-station · last 60 min" />
           <div className="grid grid-cols-1 xl:grid-cols-[1.1fr_1fr] gap-3" style={{ minHeight: 340 }}>
             <DefectHeatmap />
             <SyncTimeline />
           </div>
         </section>
+
 
         <section>
           <SectionLabel title="Operator Queue" />
