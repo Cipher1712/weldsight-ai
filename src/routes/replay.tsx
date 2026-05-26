@@ -38,7 +38,14 @@ function Replay() {
         </div>
         <SectionLabel title="Synchronized Event Timeline" />
         <SyncTimeline />
+        <SectionLabel
+          title="Physics signature at incident"
+          sub="why the model fired at T+01:49"
+          right={<Link to="/physics" className="chip mono">FULL PHYSICS · PHX →</Link>}
+        />
+        <PhysicsSignaturePanel d={PHYSICS_DEFECTS[0]} compact />
       </div>
     </>
   );
 }
+
