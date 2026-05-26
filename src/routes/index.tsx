@@ -6,7 +6,9 @@ import { WeldInspectionView } from "@/components/industrial/WeldInspectionView";
 import { AIDefectPanel } from "@/components/industrial/AIDefectPanel";
 import { StationGrid } from "@/components/industrial/StationGrid";
 import { AlertCenter } from "@/components/industrial/AlertCenter";
-import { ArrowUpRight, Activity, AlertOctagon, UploadCloud } from "lucide-react";
+import { ArrowUpRight, Activity, AlertOctagon, UploadCloud, Atom } from "lucide-react";
+import { PhysicsConsensusStrip } from "@/components/industrial/PhysicsSignature";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
