@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader, SectionLabel } from "@/components/industrial/AppShell";
 import { SyncTimeline } from "@/components/industrial/SyncTimeline";
+import { PHYSICS_DEFECTS, PhysicsSignaturePanel } from "@/components/industrial/PhysicsSignature";
 import { Rewind, FastForward, Play } from "lucide-react";
+
 
 export const Route = createFileRoute("/replay")({
   head: () => ({ meta: [{ title: "Replay Engine · WeldSight AI" }] }),
