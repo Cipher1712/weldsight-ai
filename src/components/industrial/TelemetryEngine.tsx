@@ -1,10 +1,25 @@
 import { useEffect, useState } from "react";
 import {
-  LineChart, Line, ResponsiveContainer, XAxis, YAxis,
-  CartesianGrid, Tooltip, ReferenceLine, Area, ComposedChart, BarChart, Bar,
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ReferenceLine,
+  Area,
+  ComposedChart,
+  BarChart,
+  Bar,
 } from "recharts";
+
 import { LiveTelemetryChart } from "./LiveTelemetryChart";
-import { selectPhysics, selectWs, useLiveStore } from "@/store/liveStore";
+import {
+  selectPhysics,
+  selectWs,
+  useLiveStore,
+} from "@/store/liveStore";
 
 type Channel = {
   id: string;
@@ -17,228 +32,886 @@ type Channel = {
 };
 
 const CHANNELS: Channel[] = [
-  { id: "PLC-HRC-04 · AI.MIG.I",  label: "MIG Arc Current",   unit: "A",   base: 215,  amp: 18,   color: "var(--color-cyan)" },
-  { id: "PLC-HRC-04 · AI.MIG.V",  label: "MIG Arc Voltage",   unit: "V",   base: 24.6, amp: 1.6,  color: "var(--color-stable)", spike: true },
-  { id: "PLC-HRC-04 · AI.TIG.I",  label: "TIG Arc Current",   unit: "A",   base: 145,  amp: 10,   color: "var(--color-warn)" },
-  { id: "OPC-BUS-A · TIG.V.RMS",  label: "TIG Voltage RMS",   unit: "V",   base: 12.4, amp: 0.9,  color: "#9aa6ff" },
-  { id: "ENC-MIG-02 · POS.HZ",    label: "Wire Feed Encoder", unit: "Hz",  base: 480,  amp: 12,   color: "#c9a8ff" },
-  { id: "AI.ARC.IDX",             label: "Arc Stability Idx", unit: "idx", base: 0.92, amp: 0.05, color: "var(--color-stable)" },
+  {
+    id: "PLC-HRC-04 · AI.MIG.I",
+    label: "MIG Arc Current",
+    unit: "A",
+    base: 215,
+    amp: 18,
+    color: "var(--color-cyan)",
+  },
+
+  {
+    id: "PLC-HRC-04 · AI.MIG.V",
+    label: "MIG Arc Voltage",
+    unit: "V",
+    base: 24.6,
+    amp: 1.6,
+    color: "var(--color-stable)",
+    spike: true,
+  },
+
+  {
+    id: "PLC-HRC-04 · AI.TIG.I",
+    label: "TIG Arc Current",
+    unit: "A",
+    base: 145,
+    amp: 10,
+    color: "var(--color-warn)",
+  },
+
+  {
+    id: "OPC-BUS-A · TIG.V.RMS",
+    label: "TIG Voltage RMS",
+    unit: "V",
+    base: 12.4,
+    amp: 0.9,
+    color: "#9aa6ff",
+  },
+
+  {
+    id: "ENC-MIG-02 · POS.HZ",
+    label: "Wire Feed Encoder",
+    unit: "Hz",
+    base: 480,
+    amp: 12,
+    color: "#c9a8ff",
+  },
+
+  {
+    id: "AI.ARC.IDX",
+    label: "Arc Stability Idx",
+    unit: "idx",
+    base: 0.92,
+    amp: 0.05,
+    color: "var(--color-stable)",
+  },
 ];
 
-function makeSeries(n: number, base: number, amp: number, t: number, spike = false) {
-  const out: { t: number; v: number; hi: number; lo: number }[] = [];
+function makeSeries(
+  n: number,
+  base: number,
+  amp: number,
+  t: number,
+  spike = false
+) {
+  const out: {
+    t: number;
+    v: number;
+    hi: number;
+    lo: number;
+  }[] = [];
+
   for (let i = 0; i < n; i++) {
     const x = (i + t) / 12;
-    // sinusoidal fundamental + 3rd harmonic + electrical white noise + occasional micro-jitter
-    let v = base + Math.sin(x) * amp * 0.7 + Math.sin(x * 3.1) * amp * 0.22;
+
+    let v =
+      base +
+      Math.sin(x) * amp * 0.7 +
+      Math.sin(x * 3.1) * amp * 0.22;
+
     v += (Math.random() - 0.5) * amp * 0.18;
-    if (Math.random() > 0.985) v += (Math.random() - 0.5) * amp * 0.6; // arc micro-instability
-    if (spike && i > n - 28 && i < n - 18) v += amp * 1.3 * Math.sin((i - (n - 28)) * 0.6);
-    out.push({ t: i, v, hi: base + amp * 1.2, lo: base - amp * 1.2 });
+
+    if (Math.random() > 0.985)
+      v += (Math.random() - 0.5) * amp * 0.6;
+
+    if (
+      spike &&
+      i > n - 28 &&
+      i < n - 18
+    ) {
+      v +=
+        amp *
+        1.3 *
+        Math.sin((i - (n - 28)) * 0.6);
+    }
+
+    out.push({
+      t: i,
+      v,
+      hi: base + amp * 1.2,
+      lo: base - amp * 1.2,
+    });
   }
+
   return out;
 }
 
-export function TelemetryEngine({ onSpike }: { onSpike: (v: number) => void }) {
+export function TelemetryEngine({
+  onSpike,
+}: {
+  onSpike: (v: number) => void;
+}) {
+
   const [t, setT] = useState(0);
+
+  const [telemetry, setTelemetry] = useState<any[]>([]);
+
+  // animation timer
   useEffect(() => {
-    const id = setInterval(() => setT((p) => p + 1), 250);
+
+    const id = setInterval(() => {
+      setT((p) => p + 1);
+    }, 250);
+
     return () => clearInterval(id);
+
   }, []);
 
-  // raise spike intensity periodically for cross-panel sync
+  // live telemetry fetch
   useEffect(() => {
-    const s = Math.max(0, Math.sin(t / 6)) * 0.9;
+
+    const fetchTelemetry = async () => {
+
+      try {
+
+        const response = await fetch(
+          "https://web-production-0d600.up.railway.app/telemetry"
+        );
+
+        const data = await response.json();
+
+        setTelemetry(data);
+
+      } catch (err) {
+
+        console.error(
+          "Telemetry fetch failed:",
+          err
+        );
+
+      }
+    };
+
+    fetchTelemetry();
+
+    const interval = setInterval(
+      fetchTelemetry,
+      2000
+    );
+
+    return () => clearInterval(interval);
+
+  }, []);
+
+  // cross-panel spike sync
+  useEffect(() => {
+
+    const s =
+      Math.max(0, Math.sin(t / 6)) * 0.9;
+
     onSpike(s);
+
   }, [t, onSpike]);
 
   return (
     <div className="panel flex flex-col overflow-hidden">
+
       <div className="panel-header">
+
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="panel-title">Real-Time Telemetry Engine</span>
-          <span className="mono text-[10px] text-muted-foreground">·</span>
-          <span className="mono text-[10px] text-foreground">SCADA · OPC-UA · Kafka weld.telemetry.v3</span>
+
+          <span className="panel-title">
+            Real-Time Telemetry Engine
+          </span>
+
+          <span className="mono text-[10px] text-muted-foreground">
+            ·
+          </span>
+
+          <span className="mono text-[10px] text-foreground">
+            SCADA · OPC-UA · Kafka weld.telemetry.v3
+          </span>
+
           <LiveBackendChips />
-          <span className="chip mono">CH 6/24 · 60 s window</span>
+
+          <span className="chip mono">
+            CH 6/24 · 60 s window
+          </span>
+
         </div>
+
         <div className="flex items-center gap-1.5 text-[10.5px] mono">
-          <button className="px-2 py-1 rounded bg-surface-3 border border-border-strong text-foreground">LIVE</button>
-          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">1m</button>
-          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">5m</button>
-          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">1h</button>
-          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">FFT</button>
+
+          <button className="px-2 py-1 rounded bg-surface-3 border border-border-strong text-foreground">
+            LIVE
+          </button>
+
+          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">
+            1m
+          </button>
+
+          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">
+            5m
+          </button>
+
+          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">
+            1h
+          </button>
+
+          <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">
+            FFT
+          </button>
+
         </div>
       </div>
 
-      {/* Live backend channels (real telemetry from FastAPI / WS) */}
+      {/* live backend charts */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border-b border-border">
-        <LiveTelemetryChart channel="i" label="Live Arc Current" unit="A" color="var(--color-cyan)" />
-        <LiveTelemetryChart channel="v" label="Live Arc Voltage" unit="V" color="var(--color-stable)" />
-        <LiveTelemetryChart channel="p" label="Live Instantaneous Power" unit="W" color="var(--color-warn)" />
+
+        <LiveTelemetryChart
+          channel="i"
+          label="Live Arc Current"
+          unit="A"
+          color="var(--color-cyan)"
+        />
+
+        <LiveTelemetryChart
+          channel="v"
+          label="Live Arc Voltage"
+          unit="V"
+          color="var(--color-stable)"
+        />
+
+        <LiveTelemetryChart
+          channel="p"
+          label="Live Instantaneous Power"
+          unit="W"
+          color="var(--color-warn)"
+        />
+
       </div>
+
+      {/* channel charts */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-px bg-border">
+
         {CHANNELS.map((c) => (
-          <ChannelChart key={c.id} ch={c} t={t} />
+
+          <ChannelChart
+            key={c.id}
+            ch={c}
+            t={t}
+            telemetry={telemetry}
+          />
+
         ))}
+
       </div>
 
-      {/* FFT / spectral row */}
+      {/* spectral */}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border border-t border-border">
+
         <SpectrumPanel t={t} />
+
         <RippleAnalysis t={t} />
+
         <DriftAnalysis t={t} />
+
       </div>
+
     </div>
   );
 }
 
-function ChannelChart({ ch, t }: { ch: Channel; t: number }) {
-  const data = makeSeries(120, ch.base, ch.amp, t, ch.spike);
-  const last = data[data.length - 1].v;
+function ChannelChart({
+  ch,
+  t,
+  telemetry,
+}: {
+  ch: Channel;
+  t: number;
+  telemetry: any[];
+}) {
+
+  const data =
+    telemetry.length > 0
+      ? telemetry.map((row, index) => {
+
+          let value = 0;
+
+          if (
+            ch.label.includes(
+              "MIG Arc Current"
+            )
+          ) {
+            value = row.MigCurrent;
+          }
+
+          else if (
+            ch.label.includes(
+              "MIG Arc Voltage"
+            )
+          ) {
+            value = row.MigVoltage;
+          }
+
+          else if (
+            ch.label.includes(
+              "TIG Arc Current"
+            )
+          ) {
+            value = row.TigCurrent;
+          }
+
+          else if (
+            ch.label.includes(
+              "TIG Voltage"
+            )
+          ) {
+            value = row.TigVoltage;
+          }
+
+          else if (
+            ch.label.includes(
+              "Encoder"
+            )
+          ) {
+            value = row.Encoder;
+          }
+
+          return {
+            t: index,
+            v: value,
+            hi: ch.base + ch.amp * 1.2,
+            lo: ch.base - ch.amp * 1.2,
+          };
+        })
+
+      : makeSeries(
+          120,
+          ch.base,
+          ch.amp,
+          t,
+          ch.spike
+        );
+
+  const last =
+    data.length > 0
+      ? data[data.length - 1].v
+      : 0;
+
   return (
-    <div className="bg-panel p-2.5">
+
+    <div className="bg-panel p-2.5 min-h-[120px]">
+
       <div className="flex items-center justify-between mb-1">
+
         <div className="flex items-center gap-2">
-          <span className="dot" style={{ background: ch.color }} />
-          <span className="text-[11.5px] font-medium text-foreground">{ch.label}</span>
-          <span className="mono text-[10px] text-muted-foreground uppercase tracking-wider">{ch.id}</span>
+
+          <span
+            className="dot"
+            style={{
+              background: ch.color,
+            }}
+          />
+
+          <span className="text-[11.5px] font-medium text-foreground">
+            {ch.label}
+          </span>
+
+          <span className="mono text-[10px] text-muted-foreground uppercase tracking-wider">
+            {ch.id}
+          </span>
+
         </div>
+
         <div className="mono text-[11.5px]">
-          <span className="text-foreground">{last.toFixed(ch.unit === "idx" ? 3 : 1)}</span>
-          <span className="text-muted-foreground"> {ch.unit}</span>
+
+          <span className="text-foreground">
+            {Number(last).toFixed(
+              ch.unit === "idx"
+                ? 3
+                : 1
+            )}
+          </span>
+
+          <span className="text-muted-foreground">
+            {" "}
+            {ch.unit}
+          </span>
+
         </div>
       </div>
-      <div className="h-[110px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={data} margin={{ top: 2, right: 4, bottom: 0, left: -28 }}>
-            <CartesianGrid stroke="var(--color-grid)" strokeDasharray="2 3" vertical={false} />
-            <XAxis dataKey="t" hide />
-            <YAxis stroke="var(--color-muted-foreground)" tick={{ fontSize: 9, fontFamily: "var(--font-mono)" }}
-              domain={[ch.base - ch.amp * 1.8, ch.base + ch.amp * 1.8]} width={36} />
-            <Tooltip
-              contentStyle={{ background: "var(--color-surface-2)", border: "1px solid var(--color-border)", borderRadius: 6, fontSize: 11 }}
-              labelStyle={{ color: "var(--color-muted-foreground)" }}
-              formatter={(v) => [Number(v).toFixed(2), ch.unit]}
+
+      <div className="h-[120px] min-h-[120px]">
+
+        {data.length > 0 && (
+
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+          >
+
+            <ComposedChart
+              data={data}
+              margin={{
+                top: 2,
+                right: 4,
+                bottom: 0,
+                left: -28,
+              }}
+            >
+
+              <CartesianGrid
+                stroke="var(--color-grid)"
+                strokeDasharray="2 3"
+                vertical={false}
+              />
+
+              <XAxis
+                dataKey="t"
+                hide
+              />
+
+              <YAxis
+                stroke="var(--color-muted-foreground)"
+                tick={{
+                  fontSize: 9,
+                  fontFamily:
+                    "var(--font-mono)",
+                }}
+                domain={[
+                  ch.base - ch.amp * 1.8,
+                  ch.base + ch.amp * 1.8,
+                ]}
+                width={36}
+              />
+
+              <Tooltip
+                contentStyle={{
+                  background:
+                    "var(--color-surface-2)",
+                  border:
+                    "1px solid var(--color-border)",
+                  borderRadius: 6,
+                  fontSize: 11,
+                }}
+                labelStyle={{
+                  color:
+                    "var(--color-muted-foreground)",
+                }}
+                formatter={(v) => [
+                  Number(v).toFixed(2),
+                  ch.unit,
+                ]}
+              />
+
+              <ReferenceLine
+                y={
+                  ch.base +
+                  ch.amp * 1.2
+                }
+                stroke="var(--color-warn)"
+                strokeDasharray="3 3"
+                strokeOpacity={0.5}
+              />
+
+              <ReferenceLine
+                y={
+                  ch.base -
+                  ch.amp * 1.2
+                }
+                stroke="var(--color-warn)"
+                strokeDasharray="3 3"
+                strokeOpacity={0.5}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="v"
+                stroke="none"
+                fill={ch.color}
+                fillOpacity={0.08}
+                isAnimationActive={false}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="v"
+                stroke={ch.color}
+                strokeWidth={1.4}
+                dot={false}
+                isAnimationActive={false}
+              />
+
+            </ComposedChart>
+
+          </ResponsiveContainer>
+
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+/* ========================= */
+/* Remaining panels unchanged */
+/* ========================= */
+
+function SpectrumPanel({
+  t,
+}: {
+  t: number;
+}) {
+
+  const bars = Array.from(
+    { length: 36 },
+    (_, i) => ({
+      f: i * 50,
+      v:
+        Math.abs(
+          Math.sin(
+            (i + t * 0.1) / 3
+          ) *
+            (i < 5 ? 80 : 30) +
+            Math.random() * 12
+        ),
+    })
+  );
+
+  return (
+    <div className="bg-panel p-2.5">
+      <Heading
+        title="FFT · Arc Spectrum"
+        sub="0–1.8 kHz · Hann"
+      />
+
+      <div className="h-[110px] min-h-[120px]">
+
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
+
+          <BarChart
+            data={bars}
+            margin={{
+              top: 4,
+              right: 4,
+              bottom: 0,
+              left: -28,
+            }}
+          >
+
+            <CartesianGrid
+              stroke="var(--color-grid)"
+              strokeDasharray="2 3"
+              vertical={false}
             />
-            <ReferenceLine y={ch.base + ch.amp * 1.2} stroke="var(--color-warn)" strokeDasharray="3 3" strokeOpacity={0.5} />
-            <ReferenceLine y={ch.base - ch.amp * 1.2} stroke="var(--color-warn)" strokeDasharray="3 3" strokeOpacity={0.5} />
-            <Area type="monotone" dataKey="v" stroke="none" fill={ch.color} fillOpacity={0.08} />
-            <Line type="monotone" dataKey="v" stroke={ch.color} strokeWidth={1.4} dot={false} isAnimationActive={false} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-}
 
-function SpectrumPanel({ t }: { t: number }) {
-  const bars = Array.from({ length: 36 }, (_, i) => ({
-    f: i * 50,
-    v: Math.abs(Math.sin((i + t * 0.1) / 3) * (i < 5 ? 80 : 30) + (Math.random() * 12)),
-  }));
-  return (
-    <div className="bg-panel p-2.5">
-      <Heading title="FFT · Arc Spectrum" sub="0–1.8 kHz · Hann" />
-      <div className="h-[110px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={bars} margin={{ top: 4, right: 4, bottom: 0, left: -28 }}>
-            <CartesianGrid stroke="var(--color-grid)" strokeDasharray="2 3" vertical={false} />
-            <XAxis dataKey="f" tick={{ fontSize: 9, fontFamily: "var(--font-mono)", fill: "var(--color-muted-foreground)" }} />
-            <YAxis tick={{ fontSize: 9, fontFamily: "var(--font-mono)", fill: "var(--color-muted-foreground)" }} width={36} />
-            <Bar dataKey="v" fill="var(--color-cyan)" fillOpacity={0.8} />
+            <XAxis
+              dataKey="f"
+              tick={{
+                fontSize: 9,
+                fontFamily:
+                  "var(--font-mono)",
+                fill:
+                  "var(--color-muted-foreground)",
+              }}
+            />
+
+            <YAxis
+              tick={{
+                fontSize: 9,
+                fontFamily:
+                  "var(--font-mono)",
+                fill:
+                  "var(--color-muted-foreground)",
+              }}
+              width={36}
+            />
+
+            <Bar
+              dataKey="v"
+              fill="var(--color-cyan)"
+              fillOpacity={0.8}
+              isAnimationActive={false}
+            />
+
           </BarChart>
+
         </ResponsiveContainer>
+
       </div>
     </div>
   );
 }
 
-function RippleAnalysis({ t }: { t: number }) {
-  const data = Array.from({ length: 80 }, (_, i) => ({
-    t: i,
-    v: 0.4 + Math.sin((i + t) / 5) * 0.18 + Math.sin((i + t) / 1.7) * 0.06,
-  }));
+function RippleAnalysis({
+  t,
+}: {
+  t: number;
+}) {
+
+  const data = Array.from(
+    { length: 80 },
+    (_, i) => ({
+      t: i,
+      v:
+        0.4 +
+        Math.sin((i + t) / 5) *
+          0.18 +
+        Math.sin((i + t) / 1.7) *
+          0.06,
+    })
+  );
+
   return (
     <div className="bg-panel p-2.5">
-      <Heading title="Ripple Variance σ" sub="rolling 5 s" />
-      <div className="h-[110px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -28 }}>
-            <CartesianGrid stroke="var(--color-grid)" strokeDasharray="2 3" vertical={false} />
-            <XAxis dataKey="t" hide />
-            <YAxis tick={{ fontSize: 9, fontFamily: "var(--font-mono)", fill: "var(--color-muted-foreground)" }} width={36} domain={[0, 0.8]} />
-            <ReferenceLine y={0.55} stroke="var(--color-critical)" strokeDasharray="3 3" label={{ value: "TH", fill: "var(--color-critical)", fontSize: 9 }} />
-            <Line type="monotone" dataKey="v" stroke="var(--color-warn)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+
+      <Heading
+        title="Ripple Variance σ"
+        sub="rolling 5 s"
+      />
+
+      <div className="h-[110px] min-h-[120px]">
+
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
+
+          <LineChart
+            data={data}
+            margin={{
+              top: 4,
+              right: 4,
+              bottom: 0,
+              left: -28,
+            }}
+          >
+
+            <CartesianGrid
+              stroke="var(--color-grid)"
+              strokeDasharray="2 3"
+              vertical={false}
+            />
+
+            <XAxis
+              dataKey="t"
+              hide
+            />
+
+            <YAxis
+              tick={{
+                fontSize: 9,
+                fontFamily:
+                  "var(--font-mono)",
+                fill:
+                  "var(--color-muted-foreground)",
+              }}
+              width={36}
+              domain={[0, 0.8]}
+            />
+
+            <ReferenceLine
+              y={0.55}
+              stroke="var(--color-critical)"
+              strokeDasharray="3 3"
+            />
+
+            <Line
+              type="monotone"
+              dataKey="v"
+              stroke="var(--color-warn)"
+              strokeWidth={1.5}
+              dot={false}
+              isAnimationActive={false}
+            />
+
           </LineChart>
+
         </ResponsiveContainer>
+
       </div>
     </div>
   );
 }
 
-function DriftAnalysis({ t }: { t: number }) {
-  const data = Array.from({ length: 80 }, (_, i) => ({
-    t: i,
-    v: 22 + i * 0.06 + Math.sin((i + t) / 9) * 1.4,
-  }));
+function DriftAnalysis({
+  t,
+}: {
+  t: number;
+}) {
+
+  const data = Array.from(
+    { length: 80 },
+    (_, i) => ({
+      t: i,
+      v:
+        22 +
+        i * 0.06 +
+        Math.sin((i + t) / 9) *
+          1.4,
+    })
+  );
+
   return (
     <div className="bg-panel p-2.5">
-      <Heading title="Thermal Drift" sub="°C · setpoint Δ" />
-      <div className="h-[110px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -28 }}>
-            <CartesianGrid stroke="var(--color-grid)" strokeDasharray="2 3" vertical={false} />
-            <XAxis dataKey="t" hide />
-            <YAxis tick={{ fontSize: 9, fontFamily: "var(--font-mono)", fill: "var(--color-muted-foreground)" }} width={36} />
-            <Area type="monotone" dataKey="v" stroke="none" fill="var(--color-high)" fillOpacity={0.15} />
-            <Line type="monotone" dataKey="v" stroke="var(--color-high)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+
+      <Heading
+        title="Thermal Drift"
+        sub="°C · setpoint Δ"
+      />
+
+      <div className="h-[110px] min-h-[120px]">
+
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
+
+          <ComposedChart
+            data={data}
+            margin={{
+              top: 4,
+              right: 4,
+              bottom: 0,
+              left: -28,
+            }}
+          >
+
+            <CartesianGrid
+              stroke="var(--color-grid)"
+              strokeDasharray="2 3"
+              vertical={false}
+            />
+
+            <XAxis
+              dataKey="t"
+              hide
+            />
+
+            <YAxis
+              tick={{
+                fontSize: 9,
+                fontFamily:
+                  "var(--font-mono)",
+                fill:
+                  "var(--color-muted-foreground)",
+              }}
+              width={36}
+            />
+
+            <Area
+              type="monotone"
+              dataKey="v"
+              stroke="none"
+              fill="var(--color-high)"
+              fillOpacity={0.15}
+              isAnimationActive={false}
+            />
+
+            <Line
+              type="monotone"
+              dataKey="v"
+              stroke="var(--color-high)"
+              strokeWidth={1.5}
+              dot={false}
+              isAnimationActive={false}
+            />
+
           </ComposedChart>
+
         </ResponsiveContainer>
+
       </div>
     </div>
   );
 }
 
-function Heading({ title, sub }: { title: string; sub: string }) {
+function Heading({
+  title,
+  sub,
+}: {
+  title: string;
+  sub: string;
+}) {
   return (
     <div className="flex items-center justify-between mb-1">
-      <span className="text-[11.5px] font-medium text-foreground">{title}</span>
-      <span className="mono text-[10px] text-muted-foreground">{sub}</span>
+
+      <span className="text-[11.5px] font-medium text-foreground">
+        {title}
+      </span>
+
+      <span className="mono text-[10px] text-muted-foreground">
+        {sub}
+      </span>
+
     </div>
   );
 }
 
 function LiveBackendChips() {
+
   const ws = useLiveStore(selectWs);
-  const physics = useLiveStore(selectPhysics);
+
+  const physics =
+    useLiveStore(selectPhysics);
+
   const tone =
-    ws.state === "connected" ? "chip-stable" :
-    ws.state === "polling"   ? "chip-stable" :
-    ws.state === "error" || ws.state === "disconnected" ? "chip-critical" :
-    "chip-warn";
+    ws.state === "connected"
+      ? "chip-stable"
+      : ws.state === "polling"
+      ? "chip-stable"
+      : ws.state === "error" ||
+        ws.state === "disconnected"
+      ? "chip-critical"
+      : "chip-warn";
+
   const label =
-    ws.state === "connected" ? `WS · ${ws.packetsPerSec || 0}/s` :
-    ws.state === "polling"   ? `REST · ${ws.packetsPerSec || 0}/s` :
-    ws.state === "error"     ? "ERROR" :
-    ws.state === "disconnected" ? "OFFLINE" :
-    "LINK…";
+    ws.state === "connected"
+      ? `WS · ${
+          ws.packetsPerSec || 0
+        }/s`
+      : ws.state === "polling"
+      ? `REST · ${
+          ws.packetsPerSec || 0
+        }/s`
+      : ws.state === "error"
+      ? "ERROR"
+      : ws.state === "disconnected"
+      ? "OFFLINE"
+      : "LINK…";
+
   return (
     <>
       <span className={`chip ${tone} mono`}>
-        <span className="led" style={{
-          background:
-            tone === "chip-stable"   ? "var(--color-stable)" :
-            tone === "chip-critical" ? "var(--color-critical)" :
-                                       "var(--color-warn)",
-        }} />
+
+        <span
+          className="led"
+          style={{
+            background:
+              tone === "chip-stable"
+                ? "var(--color-stable)"
+                : tone ===
+                  "chip-critical"
+                ? "var(--color-critical)"
+                : "var(--color-warn)",
+          }}
+        />
+
         {label}
+
       </span>
+
       {physics && (
-        <span className="chip mono" title="Arc-stability index from live samples">
-          ARC σ {(physics.arcStability * 100).toFixed(1)}%
+
+        <span
+          className="chip mono"
+          title="Arc-stability index from live samples"
+        >
+          ARC σ{" "}
+          {(
+            physics.arcStability * 100
+          ).toFixed(1)}
+          %
         </span>
+
       )}
     </>
   );
