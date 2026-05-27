@@ -3,6 +3,8 @@ import {
   LineChart, Line, ResponsiveContainer, XAxis, YAxis,
   CartesianGrid, Tooltip, ReferenceLine, Area, ComposedChart, BarChart, Bar,
 } from "recharts";
+import { LiveTelemetryChart } from "./LiveTelemetryChart";
+import { selectPhysics, selectWs, useLiveStore } from "@/store/liveStore";
 
 type Channel = {
   id: string;
@@ -57,8 +59,7 @@ export function TelemetryEngine({ onSpike }: { onSpike: (v: number) => void }) {
           <span className="panel-title">Real-Time Telemetry Engine</span>
           <span className="mono text-[10px] text-muted-foreground">·</span>
           <span className="mono text-[10px] text-foreground">SCADA · OPC-UA · Kafka weld.telemetry.v3</span>
-          <span className="chip chip-stable mono">PLC-HRC-04 · 1 kHz</span>
-          <span className="chip chip-stable mono">SYNC Δ 0.4 ms</span>
+          <LiveBackendChips />
           <span className="chip mono">CH 6/24 · 60 s window</span>
         </div>
         <div className="flex items-center gap-1.5 text-[10.5px] mono">
@@ -68,6 +69,13 @@ export function TelemetryEngine({ onSpike }: { onSpike: (v: number) => void }) {
           <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">1h</button>
           <button className="px-2 py-1 rounded bg-surface-2 border border-border text-muted-foreground">FFT</button>
         </div>
+      </div>
+
+      {/* Live backend channels (real telemetry from FastAPI / WS) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border-b border-border">
+        <LiveTelemetryChart channel="i" label="Live Arc Current" unit="A" color="var(--color-cyan)" />
+        <LiveTelemetryChart channel="v" label="Live Arc Voltage" unit="V" color="var(--color-stable)" />
+        <LiveTelemetryChart channel="p" label="Live Instantaneous Power" unit="W" color="var(--color-warn)" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-px bg-border">
@@ -199,5 +207,39 @@ function Heading({ title, sub }: { title: string; sub: string }) {
       <span className="text-[11.5px] font-medium text-foreground">{title}</span>
       <span className="mono text-[10px] text-muted-foreground">{sub}</span>
     </div>
+  );
+}
+
+function LiveBackendChips() {
+  const ws = useLiveStore(selectWs);
+  const physics = useLiveStore(selectPhysics);
+  const tone =
+    ws.state === "connected" ? "chip-stable" :
+    ws.state === "polling"   ? "chip-stable" :
+    ws.state === "error" || ws.state === "disconnected" ? "chip-critical" :
+    "chip-warn";
+  const label =
+    ws.state === "connected" ? `WS · ${ws.packetsPerSec || 0}/s` :
+    ws.state === "polling"   ? `REST · ${ws.packetsPerSec || 0}/s` :
+    ws.state === "error"     ? "ERROR" :
+    ws.state === "disconnected" ? "OFFLINE" :
+    "LINK…";
+  return (
+    <>
+      <span className={`chip ${tone} mono`}>
+        <span className="led" style={{
+          background:
+            tone === "chip-stable"   ? "var(--color-stable)" :
+            tone === "chip-critical" ? "var(--color-critical)" :
+                                       "var(--color-warn)",
+        }} />
+        {label}
+      </span>
+      {physics && (
+        <span className="chip mono" title="Arc-stability index from live samples">
+          ARC σ {(physics.arcStability * 100).toFixed(1)}%
+        </span>
+      )}
+    </>
   );
 }

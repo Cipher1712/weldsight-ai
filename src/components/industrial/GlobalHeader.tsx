@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { LiveStatusIndicator } from "./LiveStatusIndicator";
+
+
 
 export function GlobalHeader() {
   const [now, setNow] = useState(new Date());
@@ -84,6 +87,8 @@ export function GlobalHeader() {
 
         {/* Status cluster */}
         <div className="flex items-center gap-2 flex-wrap justify-end ml-auto">
+          <LiveStatusIndicator />
+          <div className="h-7 w-px bg-border hidden sm:block" />
           <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
             {stat("AI",   "ONLINE", "ok")}
             {stat("EDGE", "OK", "ok")}
