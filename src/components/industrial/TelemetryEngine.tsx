@@ -3,6 +3,8 @@ import {
   LineChart, Line, ResponsiveContainer, XAxis, YAxis,
   CartesianGrid, Tooltip, ReferenceLine, Area, ComposedChart, BarChart, Bar,
 } from "recharts";
+import { LiveTelemetryChart } from "./LiveTelemetryChart";
+import { selectPhysics, selectWs, useLiveStore } from "@/store/liveStore";
 
 type Channel = {
   id: string;

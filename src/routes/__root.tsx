@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/industrial/AppShell";
+import { useLiveTelemetry } from "@/hooks/useLiveTelemetry";
 
 function NotFoundComponent() {
   return (
@@ -80,6 +81,8 @@ export const Route = createRootRoute({
 const queryClient = new QueryClient();
 
 function RootComponent() {
+  // Bootstrap the singleton backend telemetry connection for every page.
+  useLiveTelemetry();
   return (
     <QueryClientProvider client={queryClient}>
       <AppShell>
