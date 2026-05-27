@@ -209,3 +209,37 @@ function Heading({ title, sub }: { title: string; sub: string }) {
     </div>
   );
 }
+
+function LiveBackendChips() {
+  const ws = useLiveStore(selectWs);
+  const physics = useLiveStore(selectPhysics);
+  const tone =
+    ws.state === "connected" ? "chip-stable" :
+    ws.state === "polling"   ? "chip-stable" :
+    ws.state === "error" || ws.state === "disconnected" ? "chip-critical" :
+    "chip-warn";
+  const label =
+    ws.state === "connected" ? `WS · ${ws.packetsPerSec || 0}/s` :
+    ws.state === "polling"   ? `REST · ${ws.packetsPerSec || 0}/s` :
+    ws.state === "error"     ? "ERROR" :
+    ws.state === "disconnected" ? "OFFLINE" :
+    "LINK…";
+  return (
+    <>
+      <span className={`chip ${tone} mono`}>
+        <span className="led" style={{
+          background:
+            tone === "chip-stable"   ? "var(--color-stable)" :
+            tone === "chip-critical" ? "var(--color-critical)" :
+                                       "var(--color-warn)",
+        }} />
+        {label}
+      </span>
+      {physics && (
+        <span className="chip mono" title="Arc-stability index from live samples">
+          ARC σ {(physics.arcStability * 100).toFixed(1)}%
+        </span>
+      )}
+    </>
+  );
+}
